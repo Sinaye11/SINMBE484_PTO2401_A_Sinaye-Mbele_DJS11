@@ -22,4 +22,27 @@
       max-height: 300px;       /* Optional: smaller image size on smaller screens */
     }
   }
+  .season-image {
+    width: 100%; /* Or any preferred size */
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+  .episode {
+    margin-bottom: 15px;
+  }
   
+  .episode h5 {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .episode p {
+    font-size: 1rem;
+    color: gray;
+  }
+  
+  .episodes {
+    margin-top: 20px;
+  }
+   
