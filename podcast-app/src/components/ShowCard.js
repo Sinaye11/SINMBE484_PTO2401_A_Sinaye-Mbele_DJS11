@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './ShowCard.css'; // Import the CSS file to style the ShowCard component
 
 // Individual show card component to display basic show details
 const ShowCard = ({ show }) => {
   // Destructuring show properties for easy access
-  const { id, title, genre, image, description } = show;
+  const { id, title, genre, image } = show;
 
   return (
     <div className="show-card">
@@ -16,9 +17,6 @@ const ShowCard = ({ show }) => {
 
       {/* Show genre */}
       <p><strong>Genre:</strong> {genre}</p>
-
-      {/* Show description (if available) */}
-      {description && <p>{description}</p>}
 
       {/* Link to the detailed show page */}
       <Link to={`/show/${id}`} className="view-show-details">

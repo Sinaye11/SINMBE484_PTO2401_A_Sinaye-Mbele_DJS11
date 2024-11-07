@@ -1,85 +1,61 @@
-/* Home page container */
-.home {
-    padding: 20px;
-    text-align: center;
-  }
-  
-  /* Title for the home page */
-  .home h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  /* Grid layout for the show list */
-  .show-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid with a min-width of 250px for each card */
-    gap: 20px;
-    justify-items: center;
-  }
-  
-  /* Individual show card styling */
-  .show-card {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    width: 100%;
-    max-width: 300px; /* Limit the width of the cards */
-    text-align: left;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .show-card:hover {
-    transform: translateY(-5px); /* Hover effect */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Show title styling */
-  .show-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #333;
-    font-weight: bold;
-  }
-  
-  /* Image styling */
-  .show-card img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 15px;
-  }
-  
-  /* Description text styling */
-  .show-card p {
-    font-size: 1rem;
-    color: #555;
-    line-height: 1.5;
-  }
-  
-  /* Link button style */
-  .show-card a {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 4px;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .show-card a:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Error message styling */
-  .error {
-    color: red;
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-  
+.home-page {
+  text-align: center;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center; /* Vertically center the logo and text */
+  justify-content: center; /* Center them horizontally */
+  gap: 8px; /* Reduce space between logo and text */
+}
+
+.logo {
+  height: 10px; /* Very small height for the logo */
+  width: auto;  /* Maintain aspect ratio */
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0; /* Remove margin to ensure tight alignment */
+}
+
+.show-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.show-card {
+  text-align: center;
+  width: 200px;
+}
+
+.show-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.show-title {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+.more-info-button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.more-info-button:hover {
+  background-color: #0056b3;
+}
