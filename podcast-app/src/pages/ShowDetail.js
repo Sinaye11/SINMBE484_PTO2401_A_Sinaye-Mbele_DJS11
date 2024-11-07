@@ -1,13 +1,14 @@
-// ShowDetail page - Displays detailed information about a specific show, including its seasons and episodes
-
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import AudioPlayer from '../components/AudioPlayer'; // Import the AudioPlayer component
 
 const ShowDetail = () => {
-  const { id } = useParams(); // Get the show ID from the URL
+  const { id } = useParams();
   const [show, setShow] = useState(null);
   const [error, setError] = useState(null);
-  const [selectedSeason, setSelectedSeason] = useState(null); // Track selected season
+  const [selectedSeason, setSelectedSeason] = useState(null);
+  const [currentlyPlaying, setCurrentlyPlaying] = useState(null);  // Track currently playing episode
+  const [isPlaying, setIsPlaying] = useState(false);  // Track play/pause state
 
   useEffect(() => {
     const fetchShowDetails = async () => {
@@ -25,15 +26,10 @@ const ShowDetail = () => {
     };
 
     fetchShowDetails();
-  }, [id]); // Re-fetch when the ID changes
+  }, [id]);
 
   const toggleSeason = (seasonId) => {
-    // If the clicked season is the same as the selected one, close it
-    if (selectedSeason === seasonId) {
-      setSelectedSeason(null); 
-    } else {
-      setSelectedSeason(seasonId); // Open the clicked season
-    }
+    setSelectedSeason(selectedSeason === seasonId ? null : seasonId);
   };
 
   if (error) {
@@ -56,11 +52,11 @@ const ShowDetail = () => {
           <h3>Seasons</h3>
           {show.seasons.map((season, index) => (
             <div key={season.id} className="season">
-              <h4 
-                onClick={() => toggleSeason(season.id)} // Toggle on click
+              <h4
+                onClick={() => toggleSeason(season.id)}
                 style={{ cursor: 'pointer', color: 'blue' }}
               >
-                Season {index + 1} {/* Display "Season 1", "Season 2", etc. */}
+                Season {index + 1}
               </h4>
 
               {/* Conditionally render episodes */}
@@ -71,10 +67,19 @@ const ShowDetail = () => {
                       <li key={episode.id}>
                         <h5>{episode.title}</h5>
                         <p>{episode.description}</p>
-                        <audio controls>
-                          <source src={episode.audio_url} type="audio/mpeg" />
-                          Your browser does not support the audio element.
-                        </audio>
+                        
+                        {/* Render AudioPlayer for each episode */}
+                        {episode.audio_url ? (
+                          <AudioPlayer 
+                            episode={episode}
+                            currentlyPlaying={currentlyPlaying}
+                            setCurrentlyPlaying={setCurrentlyPlaying}
+                            isPlaying={isPlaying}
+                            setIsPlaying={setIsPlaying}
+                          />
+                        ) : (
+                          <p>Audio unavailable</p>
+                        )}
                       </li>
                     ))
                   ) : (

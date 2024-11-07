@@ -1,37 +1,24 @@
-// Audio player to listen to episodes
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-// AudioPlayer component to play podcast episodes
-const AudioPlayer = ({ episode, onFavorite, isFavorite }) => {
-  const [isPlaying, setIsPlaying] = useState(false); // State to track if the audio is playing
-  const [progress, setProgress] = useState(0); // State to track the current progress of the audio
-  const audioRef = useRef(null); // Reference to the audio element
+const AudioPlayer = ({ episode, currentlyPlaying, setCurrentlyPlaying, isPlaying, setIsPlaying }) => {
+  const audioRef = useRef(null);
 
   useEffect(() => {
-    // If the audio is playing, update the progress every second
-    if (isPlaying) {
-      const interval = setInterval(() => {
-        if (audioRef.current) {
-          setProgress((audioRef.current.currentTime / audioRef.current.duration) * 100);
-        }
-      }, 1000);
-      return () => clearInterval(interval); // Clear the interval when the component is unmounted or isPlaying changes
+    if (currentlyPlaying === episode.id && isPlaying) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
     }
-  }, [isPlaying]);
+  }, [currentlyPlaying, isPlaying, episode.id]);
 
   const togglePlayPause = () => {
-    // Toggle play/pause
-    if (isPlaying) {
+    if (currentlyPlaying === episode.id && isPlaying) {
       audioRef.current.pause();
+      setIsPlaying(false);
     } else {
-      audioRef.current.play();
+      setCurrentlyPlaying(episode.id);
+      setIsPlaying(true);
     }
-    setIsPlaying(!isPlaying);
-  };
-
-  const handleFavorite = () => {
-    // Call the onFavorite callback to handle adding/removing from favorites
-    onFavorite(episode);
   };
 
   return (
@@ -39,31 +26,13 @@ const AudioPlayer = ({ episode, onFavorite, isFavorite }) => {
       <h3>{episode.title}</h3>
       <p>{episode.description}</p>
       
-      {/* Audio control buttons */}
       <button onClick={togglePlayPause}>
         {isPlaying ? 'Pause' : 'Play'}
       </button>
 
-      {/* Favorite button */}
-      <button onClick={handleFavorite}>
-        {isFavorite ? 'Unfavorite' : 'Favorite'}
-      </button>
-
-      {/* Audio player element */}
-      <audio ref={audioRef} src={episode.audio_url} /> {/* Ensure 'episode.audio_url' is used here */}
-      
-      {/* Progress bar showing the current play progress */}
-      <div className="progress-bar">
-        <div
-          className="progress"
-          style={{ width: `${progress}%` }}
-        ></div>
-      </div>
-
-      {/* Optionally, you could add additional metadata like duration */}
-      <div className="audio-duration">
-        <span>{Math.floor(progress)}%</span>
-      </div>
+      <audio ref={audioRef} src={episode.audio_url} controls>
+        Your browser does not support the audio element.
+      </audio>
     </div>
   );
 };
