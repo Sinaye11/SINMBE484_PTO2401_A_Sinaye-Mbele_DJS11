@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../assets/logo.png'; // Import logo image
 import GenreFilter from './GenreFilter'; // Genre filter for filtering shows by genre
 import LoadingSpinner from './LoadingSpinner'; // Loading spinner for the loading state
 import ShowCard from './ShowCard'; // ShowCard for displaying individual show details
@@ -9,7 +10,7 @@ const ShowList = ({ shows, genres, onFilterChange, isLoading }) => {
     <div className="landing-page">
       {/* Page title with logo */}
       <div className="page-header">
-        <img src="path/to/logo.png" alt="Logo" className="logo" />
+        <img src={logo} alt="Logo" className="logo" />
         <h1 className="page-title">Podcast Shows</h1>
       </div>
 
@@ -39,4 +40,3 @@ const ShowList = ({ shows, genres, onFilterChange, isLoading }) => {
 };
 
 export default ShowList;
-

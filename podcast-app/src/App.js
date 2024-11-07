@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom'; // Adjusted imports
 import './App.css'; // Import global styles
+import logo from './assets/logo.png'; // Assuming you have a logo file in assets
 import { FavouritesContext } from './context/FavouritesContext'; // Import FavouritesContext for global state
 import Favourites from './pages/Favourites'; // Import the Favourites page component
 import Home from './pages/Home'; // Import the Home component
@@ -30,11 +31,20 @@ const App = () => {
 
   // Render loading or error messages if needed
   if (error) {
-    return <div className="error">{error}</div>;
+    return (
+      <div className="error">
+        <h2>{error}</h2>
+      </div>
+    );
   }
 
   if (!shows.length) {
-    return <div>Loading shows...</div>;
+    return (
+      <div className="loading">
+        <h2>Loading shows...</h2>
+        {/* Optional: You can add a spinner or loading animation here */}
+      </div>
+    );
   }
 
   return (
@@ -42,7 +52,10 @@ const App = () => {
       <FavouritesContext.Provider value={{ favourites, setFavourites }}>
         <div className="app">
           <header className="app-header">
-            <h1>Podcast App</h1>
+            <Link to="/" className="logo-link">
+              <img src={logo} alt="App Logo" className="app-logo" />
+              <h1>Podcast App</h1>
+            </Link>
           </header>
           <main>
             <Routes>
@@ -66,4 +79,3 @@ const App = () => {
 };
 
 export default App;
-

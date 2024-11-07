@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'; // Import PropTypes for prop validation
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './ShowCard.css';
@@ -43,5 +44,14 @@ const ShowCard = ({ show }) => {
   );
 };
 
-export default ShowCard;
+ShowCard.propTypes = {
+  show: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    genre: PropTypes.string.isRequired,
+    image: PropTypes.string,
+    lastUpdated: PropTypes.string,
+  }).isRequired,
+};
 
+export default ShowCard;
