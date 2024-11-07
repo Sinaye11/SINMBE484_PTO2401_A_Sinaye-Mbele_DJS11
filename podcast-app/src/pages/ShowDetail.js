@@ -7,6 +7,8 @@ const ShowDetail = () => {
   const [show, setShow] = useState(null);
   const [error, setError] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(null);
+  const [currentlyPlaying, setCurrentlyPlaying] = useState(null); // Track the current episode
+  const [isPlaying, setIsPlaying] = useState(false); // Track play/pause state
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -43,6 +45,15 @@ const ShowDetail = () => {
 
   const handleSeasonChange = (season) => {
     setSelectedSeason(season);
+  };
+
+  const handlePlayPause = (episode) => {
+    if (currentlyPlaying && currentlyPlaying.id === episode.id) {
+      setIsPlaying(!isPlaying);  // Toggle the play state
+    } else {
+      setCurrentlyPlaying(episode);  // Set the new episode
+      setIsPlaying(true);  // Start playing
+    }
   };
 
   if (error) {
@@ -93,23 +104,33 @@ const ShowDetail = () => {
           <h4>Episodes of {selectedSeason.title}</h4>
           <div className="episode-list">
             {selectedSeason.episodes.length > 0 ? (
-              selectedSeason.episodes.map((episode) => (
-                <div key={episode.id} className="episode-card">
-                  <h5>{episode.title}</h5>
-                  <p>{episode.description}</p>
-                  {episode.audioUrl && (
-                    <AudioPlayer src={episode.audioUrl} />
-                  )}
-                </div>
-              ))
+              selectedSeason.episodes.map((episode) => {
+                console.log("Episode data:", episode);  // Log the entire episode object
+                return (
+                  <div key={episode.id} className="episode-card">
+                    <h5>{episode.title}</h5>
+                    <p>{episode.description}</p>
+                    {episode.file && (  // Check for the 'file' property instead of 'audio_url'
+                      <AudioPlayer
+                        episode={episode}
+                        currentlyPlaying={currentlyPlaying === episode ? episode : null}
+                        setCurrentlyPlaying={setCurrentlyPlaying}
+                        isPlaying={isPlaying}
+                        setIsPlaying={setIsPlaying}
+                      />
+                    )}
+                  </div>
+                );
+              })
             ) : (
               <p>No episodes available for this season.</p>
             )}
           </div>
-        </div>
+        </div>  // Closing div for the episodes container
       )}
     </div>
   );
 };
 
 export default ShowDetail;
+

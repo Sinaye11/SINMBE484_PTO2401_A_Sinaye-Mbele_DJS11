@@ -4,19 +4,27 @@ const AudioPlayer = ({ episode, currentlyPlaying, setCurrentlyPlaying, isPlaying
   const audioRef = useRef(null);
 
   useEffect(() => {
-    if (currentlyPlaying === episode.id && isPlaying) {
-      audioRef.current.play();
-    } else {
-      audioRef.current.pause();
+    console.log("Currently Playing:", currentlyPlaying);  // Debugging log
+    console.log("Is Playing:", isPlaying);  // Debugging log
+
+    if (currentlyPlaying && currentlyPlaying.id === episode.id) {
+      if (isPlaying) {
+        console.log("Playing audio...");
+        audioRef.current.play();
+      } else {
+        console.log("Pausing audio...");
+        audioRef.current.pause();
+      }
     }
   }, [currentlyPlaying, isPlaying, episode.id]);
 
   const togglePlayPause = () => {
-    if (currentlyPlaying === episode.id && isPlaying) {
+    console.log("Toggling play/pause...");
+    if (currentlyPlaying && currentlyPlaying.id === episode.id && isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      setCurrentlyPlaying(episode.id);
+      setCurrentlyPlaying(episode); // Set the whole episode as currentlyPlaying
       setIsPlaying(true);
     }
   };
@@ -30,7 +38,7 @@ const AudioPlayer = ({ episode, currentlyPlaying, setCurrentlyPlaying, isPlaying
         {isPlaying ? 'Pause' : 'Play'}
       </button>
 
-      <audio ref={audioRef} src={episode.audio_url} controls>
+      <audio ref={audioRef} src={episode.file} controls>
         Your browser does not support the audio element.
       </audio>
     </div>
