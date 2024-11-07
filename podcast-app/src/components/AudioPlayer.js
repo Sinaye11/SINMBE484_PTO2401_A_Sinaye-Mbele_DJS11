@@ -1,5 +1,4 @@
-//Audio player to listen to episodes
-
+// Audio player to listen to episodes
 import React, { useEffect, useRef, useState } from 'react';
 
 // AudioPlayer component to play podcast episodes
@@ -51,7 +50,7 @@ const AudioPlayer = ({ episode, onFavorite, isFavorite }) => {
       </button>
 
       {/* Audio player element */}
-      <audio ref={audioRef} src={episode.audioUrl} />
+      <audio ref={audioRef} src={episode.audio_url} /> {/* Ensure 'episode.audio_url' is used here */}
       
       {/* Progress bar showing the current play progress */}
       <div className="progress-bar">

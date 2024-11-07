@@ -104,3 +104,27 @@ button:hover {
   background-color: #0056b3;
 }
 
+/* ShowDetail Image Adjustments */
+
+.show-detail img {
+  width: 100%;
+  height: auto;
+  max-height: 400px;         /* Restrict the image's max height */
+  object-fit: cover;         /* Make sure it covers the space */
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.show-detail {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.show-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+

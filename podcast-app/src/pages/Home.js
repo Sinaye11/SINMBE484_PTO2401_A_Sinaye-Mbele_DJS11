@@ -1,8 +1,7 @@
 // Home page that displays a list of available shows (podcasts)
 
-// Home page that displays a list of available shows (podcasts)
-
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import './Home.css'; // Optional: Import specific styles for the Home component
 
 const Home = () => {
@@ -51,8 +50,8 @@ const Home = () => {
               <h3>{show.title}</h3>
               {/* Optional: Display show details like a description */}
               <p>{show.description}</p>
-              {/* Add a link to view more details (optional) */}
-              <a href={`/show/${show.id}`}>View Show</a>
+              {/* Use Link to navigate to the ShowDetail page */}
+              <Link to={`/show/${show.id}`}>View Show</Link>
             </div>
           ))}
         </div>
