@@ -9,12 +9,9 @@ const Home = () => {
     // Fetch shows data when the component mounts
     fetchShows()
       .then((data) => {
-        // Handle case if data is not an array
-        const showsArray = Array.isArray(data) ? data : [data]; // Ensure it's an array
-        // Sort shows alphabetically by title
-        const sortedShows = showsArray.sort((a, b) => a.title.localeCompare(b.title));
-
-        setShows(sortedShows);  // Set the sorted shows
+        // Sort shows alphabetically by title before setting state
+        const sortedShows = data.sort((a, b) => a.title.localeCompare(b.title));
+        setShows(sortedShows);  // Assuming `data` is an array of shows
       })
       .catch((error) => {
         console.error('Error fetching shows:', error);
@@ -27,44 +24,54 @@ const Home = () => {
     return new Date(date).toLocaleDateString(undefined, options);
   };
 
+  // Genre mapping object
+  const genreMap = {
+    1: 'Personal Growth',
+    2: 'Investigative Journalism',
+    3: 'History',
+    4: 'Comedy',
+    5: 'Entertainment',
+    6: 'Business',
+    7: 'Fiction',
+    8: 'News',
+    9: 'Kids and Family'
+  };
+
   return (
     <div className="home-page">
       <div className="header">
+        {/* Logo and text aligned horizontally */}
         <h1>Podcast Shows</h1>
       </div>
       <div className="show-list">
-        {shows.length > 0 ? (
-          shows.map((show) => (
-            <div className="show-card" key={show.id}>
-              {/* Make the image clickable and navigate to the show's details page */}
-              <Link to={`/show/${show.id}`}>
-                <img src={show.image} alt={show.title} className="show-image" />
-              </Link>
-              <h3 className="show-title">{show.title}</h3>
+        {shows.map((show) => (
+          <div className="show-card" key={show.id}>
+            {/* Make the image clickable and navigate to the show's details page */}
+            <Link to={`/show/${show.id}`}>
+              <img src={show.image} alt={show.title} className="show-image" />
+            </Link>
+            <h3 className="show-title">{show.title}</h3>
 
-              {/* Display last modified date */}
-              {show.updated && (
-                <p className="last-modified">
-                  Last Updated: {formatDate(show.updated)}
-                </p>
-              )}
+            {/* Display last modified date if available */}
+            {show.updated && (
+              <p className="last-modified">
+                Last Updated: {formatDate(show.updated)}
+              </p>
+            )}
 
-              {/* Display genre (Assuming it's a single genre for now) */}
-              {show.genres && (
-                <p className="genre">
-                  Genre: {show.genres.join(', ')} {/* Display genres */}
-                </p>
-              )}
+            {/* Display genre using the genreMap */}
+            {show.genres && show.genres.length > 0 && (
+              <p className="genre">
+                Genre: {show.genres.map((genreId) => genreMap[genreId] || 'Unknown').join(', ')}
+              </p>
+            )}
 
-              {/* More Info button */}
-              <Link to={`/show/${show.id}`} className="more-info-button">
-                More Info
-              </Link>
-            </div>
-          ))
-        ) : (
-          <p>No shows available.</p>
-        )}
+            {/* More Info button */}
+            <Link to={`/show/${show.id}`} className="more-info-button">
+              More Info
+            </Link>
+          </div>
+        ))}
       </div>
     </div>
   );
