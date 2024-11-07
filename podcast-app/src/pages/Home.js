@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; // To handle navigation
+import GenreFilter from '../components/GenreFilter'; // Import the GenreFilter component
 import { fetchShows } from '../services/api'; // Assuming you have a function to fetch the shows
 
 const Home = () => {
   const [shows, setShows] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState(''); // Track the selected genre
 
   useEffect(() => {
     // Fetch shows data when the component mounts
@@ -17,6 +19,11 @@ const Home = () => {
         console.error('Error fetching shows:', error);
       });
   }, []);
+
+  // Filter the shows based on the selected genre
+  const filteredShows = selectedGenre
+    ? shows.filter((show) => show.genres && show.genres.includes(parseInt(selectedGenre)))
+    : shows;
 
   // Helper function to format the date
   const formatDate = (date) => {
@@ -37,14 +44,27 @@ const Home = () => {
     9: 'Kids and Family'
   };
 
+  // Handle the genre change from GenreFilter
+  const handleGenreFilterChange = (genre) => {
+    setSelectedGenre(genre);
+  };
+
   return (
     <div className="home-page">
       <div className="header">
         {/* Logo and text aligned horizontally */}
         <h1>Podcast Shows</h1>
       </div>
+
+      {/* Add the GenreFilter component */}
+      <GenreFilter
+        genres={Object.keys(genreMap)} // Pass genre IDs to GenreFilter
+        onFilterChange={handleGenreFilterChange}
+        currentGenre={selectedGenre}
+      />
+
       <div className="show-list">
-        {shows.map((show) => (
+        {filteredShows.map((show) => (
           <div className="show-card" key={show.id}>
             {/* Make the image clickable and navigate to the show's details page */}
             <Link to={`/show/${show.id}`}>

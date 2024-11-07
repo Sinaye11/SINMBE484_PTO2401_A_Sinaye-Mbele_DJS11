@@ -1,28 +1,35 @@
-//Filter shows by genre
-
 import React, { useEffect, useState } from 'react';
 
-// GenreFilter component to filter shows by genre
+// Genre ID to Title Mapping
+const genreMapping = {
+  1: 'Personal Growth',
+  2: 'Investigative Journalism',
+  3: 'History',
+  4: 'Comedy',
+  5: 'Entertainment',
+  6: 'Business',
+  7: 'Fiction',
+  8: 'News',
+  9: 'Kids and Family',
+};
+
 const GenreFilter = ({ genres, onFilterChange, currentGenre }) => {
   const [selectedGenre, setSelectedGenre] = useState(currentGenre || '');
 
   useEffect(() => {
-    // Update the selected genre if the currentGenre prop changes
-    setSelectedGenre(currentGenre);
+    setSelectedGenre(currentGenre); // Sync with current genre from parent
   }, [currentGenre]);
 
   const handleGenreChange = (event) => {
     const selected = event.target.value;
     setSelectedGenre(selected); // Update local state
-    onFilterChange(selected); // Pass the selected genre to the parent component
+    onFilterChange(selected); // Pass selected genre to parent
   };
 
   return (
     <div className="genre-filter">
-      {/* Label for accessibility */}
       <label htmlFor="genre-select">Filter by Genre:</label>
       
-      {/* Genre selection dropdown */}
       <select 
         id="genre-select" 
         value={selectedGenre} 
@@ -31,11 +38,10 @@ const GenreFilter = ({ genres, onFilterChange, currentGenre }) => {
       >
         <option value="">All</option>
         
-        {/* Mapping through genres to create option elements */}
         {genres && genres.length > 0 ? (
-          genres.map((genre) => (
-            <option key={genre} value={genre}>
-              {genre}
+          genres.map((genreId) => (
+            <option key={genreId} value={genreId}>
+              {genreMapping[genreId] || 'Unknown Genre'}
             </option>
           ))
         ) : (
@@ -47,4 +53,3 @@ const GenreFilter = ({ genres, onFilterChange, currentGenre }) => {
 };
 
 export default GenreFilter;
-
