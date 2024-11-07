@@ -16,6 +16,12 @@ const Home = () => {
       });
   }, []);
 
+  // Helper function to format the date
+  const formatDate = (date) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(date).toLocaleDateString(undefined, options);
+  };
+
   return (
     <div className="home-page">
       <div className="header">
@@ -26,8 +32,26 @@ const Home = () => {
       <div className="show-list">
         {shows.map((show) => (
           <div className="show-card" key={show.id}>
-            <img src={show.image} alt={show.title} className="show-image" />
+            {/* Make the image clickable and navigate to the show's details page */}
+            <Link to={`/show/${show.id}`}>
+              <img src={show.image} alt={show.title} className="show-image" />
+            </Link>
             <h3 className="show-title">{show.title}</h3>
+            
+            {/* Display last modified date */}
+            {show.lastModified && (
+              <p className="last-modified">
+                Last Modified: {formatDate(show.lastModified)}
+              </p>
+            )}
+
+            {/* Display genre */}
+            {show.genre && (
+              <p className="genre">
+                Genre: {show.genre}
+              </p>
+            )}
+
             {/* More Info button */}
             <Link to={`/show/${show.id}`} className="more-info-button">
               More Info

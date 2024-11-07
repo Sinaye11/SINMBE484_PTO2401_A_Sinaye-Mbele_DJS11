@@ -1,15 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './ShowCard.css'; // Import the CSS file to style the ShowCard component
+import './ShowCard.css';
 
 // Individual show card component to display basic show details
 const ShowCard = ({ show }) => {
-  // Destructuring show properties for easy access
-  const { id, title, genre, image } = show;
+  // Destructure show properties for easy access
+  const { id, title, genre, image, lastUpdated } = show;
+
+  // Format the last updated date to a readable format (e.g., "November 7, 2024")
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).format(date);
+  };
 
   return (
     <div className="show-card">
-      {/* Show image, if available, otherwise use a fallback */}
+      {/* Show image, with a fallback */}
       <img src={image || '/assets/default-show-image.jpg'} alt={title} className="show-card-image" />
 
       {/* Show title */}
@@ -17,6 +27,13 @@ const ShowCard = ({ show }) => {
 
       {/* Show genre */}
       <p><strong>Genre:</strong> {genre}</p>
+
+      {/* Display last updated date */}
+      {lastUpdated && (
+        <p className="last-updated">
+          <strong>Last updated:</strong> {formatDate(lastUpdated)}
+        </p>
+      )}
 
       {/* Link to the detailed show page */}
       <Link to={`/show/${id}`} className="view-show-details">
@@ -27,3 +44,4 @@ const ShowCard = ({ show }) => {
 };
 
 export default ShowCard;
+
