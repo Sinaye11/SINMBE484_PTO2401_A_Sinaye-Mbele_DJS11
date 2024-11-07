@@ -62,13 +62,22 @@ const App = () => {
     <Router>
       <FavouritesContext.Provider value={{ favourites, setFavourites }}>
         <div className="app">
-          <header className="app-header">
-            <Link to="/" className="logo-link">
-              <img src={logo} alt="App Logo" className="app-logo" />
+          {/* Navbar */}
+          <header className="navbar">
+            <div className="logo-container">
+              <img src={logo} alt="App Logo" />
               <h1>Podcast App</h1>
-            </Link>
+            </div>
+            <div className="nav-links">
+              <ul>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/favourites">Favourites</Link></li>
+              </ul>
+            </div>
           </header>
-          <main>
+
+          {/* Main Content */}
+          <main className="main-content">
             <Routes>
               <Route path="/" element={<Home shows={shows} />} />
               <Route path="/show/:id" element={<ShowDetail />} />
