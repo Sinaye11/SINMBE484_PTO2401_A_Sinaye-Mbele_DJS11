@@ -1,39 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom'; // Adjusted imports
-import './App.css'; // Import global styles
-import logo from './assets/logo.png'; // Assuming you have a logo file in assets
-import { FavouritesContext } from './context/FavouritesContext'; // Import FavouritesContext for global state
-import Favourites from './pages/Favourites'; // Import the Favourites page component
-import Home from './pages/Home'; // Import the Home component
-import NotFound from './pages/NotFound'; // Import NotFound page for unmatched routes
-import ShowDetail from './pages/ShowDetail'; // Import the ShowDetail component
-import { fetchShows } from './services/api'; // Import the function to fetch shows
+import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import './App.css';
+import logo from './assets/logo.png';
+import { FavouritesContext } from './context/FavouritesContext';
+import Favourites from './pages/Favourites';
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
+import ShowDetail from './pages/ShowDetail';
+import { fetchShows } from './services/api';
 
 const App = () => {
-  const [shows, setShows] = useState([]); // State to hold the list of shows
-  const [error, setError] = useState(null); // State to hold any error message
-  const [favourites, setFavourites] = useState([]); // State to hold the favourites
+  const [shows, setShows] = useState([]); 
+  const [error, setError] = useState(null); 
+  const [favourites, setFavourites] = useState([]); 
 
   // Fetch shows when the app mounts
   useEffect(() => {
     const loadShows = async () => {
       try {
-        const data = await fetchShows();
-        setShows(data);
+        const data = await fetchShows(); // Fetch shows from the API
+        console.log('Fetched data:', data); // Log the raw response to check the structure
+
+        if (!data) {
+          throw new Error('No shows data found');
+        }
+
+        // Handle if the response is a single show instead of an array.
+        const showsArray = Array.isArray(data) ? data : [data]; // Ensure data is treated as an array
+        
+        // Now sort the shows alphabetically based on the title property
+        const sortedShows = showsArray.sort((a, b) => a.title.localeCompare(b.title)); 
+
+        setShows(sortedShows); // Set the sorted shows into the state
       } catch (err) {
         setError('Error fetching shows.');
-        console.error(err);
+        console.error('Error fetching shows:', err); // Log detailed error for debugging
       }
     };
 
     loadShows();
-  }, []); // Empty dependency array to run the effect only once
+  }, []);
 
   // Render loading or error messages if needed
   if (error) {
     return (
       <div className="error">
-        <h2>{error}</h2>
+        <h2>{error}</h2> {/* Display the error message */}
       </div>
     );
   }
@@ -42,7 +54,6 @@ const App = () => {
     return (
       <div className="loading">
         <h2>Loading shows...</h2>
-        {/* Optional: You can add a spinner or loading animation here */}
       </div>
     );
   }
@@ -59,16 +70,9 @@ const App = () => {
           </header>
           <main>
             <Routes>
-              {/* Home page with list of shows */}
               <Route path="/" element={<Home shows={shows} />} />
-
-              {/* Show detail page */}
               <Route path="/show/:id" element={<ShowDetail />} />
-
-              {/* Favourites page */}
               <Route path="/favourites" element={<Favourites />} />
-
-              {/* 404 page */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
