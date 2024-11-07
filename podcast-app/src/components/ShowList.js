@@ -1,3 +1,4 @@
+// src/components/ShowList.js
 import React from 'react';
 import logo from '../assets/logo.png'; // Import logo image
 import GenreFilter from './GenreFilter'; // Genre filter for filtering shows by genre

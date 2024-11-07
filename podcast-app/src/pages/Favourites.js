@@ -1,33 +1,51 @@
-// src/pages/Favourites.js
-import React from 'react';
+//Shows a list of favourite episodes
+
+import React, { useEffect } from 'react';
 import { useFavourites } from '../context/FavouritesContext';
 
 const Favourites = () => {
-  const { sortedFavourites, toggleSortOrder } = useFavourites();
+  const { favourites, setFavourites, removeFavourite } = useFavourites();
+
+  const handleRemoveFavourite = (episodeId) => {
+    removeFavourite(episodeId);
+  };
+
+  useEffect(() => {
+    const fetchFavourites = async () => {
+      try {
+        const response = await fetch('/api/favourites');
+        if (!response.ok) {
+          throw new Error('Failed to fetch favourites');
+        }
+        const data = await response.json();
+        setFavourites(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchFavourites();
+  }, [setFavourites]);
 
   return (
     <div>
-      <h2>My Favourite Episodes</h2>
-
-      {/* Button to toggle sort order */}
-      <button onClick={toggleSortOrder}>
-        Sort {sortedFavourites().length > 0 && sortedFavourites()[0].title < sortedFavourites()[sortedFavourites().length - 1].title ? 'Z-A' : 'A-Z'}
-      </button>
-
-      {/* Display sorted favourites */}
-      <ul>
-        {sortedFavourites().map((episode, index) => (
-          <li key={index}>
-            <h3>{episode.title}</h3>
-            {/* Additional episode info */}
-          </li>
-        ))}
-      </ul>
+      <h2>Favourites</h2>
+      <div>
+        {favourites.length > 0 ? (
+          favourites.map((episode) => (
+            <div key={episode.id} className="favourite-episode">
+              <h3>{episode.title}</h3>
+              <button onClick={() => handleRemoveFavourite(episode.id)}>Remove from Favourites</button>
+            </div>
+          ))
+        ) : (
+          <p>No favourites yet!</p>
+        )}
+      </div>
     </div>
   );
 };
 
 export default Favourites;
-
 
 

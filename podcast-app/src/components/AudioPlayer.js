@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-//import './AudioPlayer.css';
 
-const AudioPlayer = ({ episode }) => {
+const AudioPlayer = ({ episode, currentlyPlaying, setCurrentlyPlaying, setIsPlaying, isPlaying }) => {
   const audioRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false); // Whether the episode is playing
-  const [currentlyPlaying, setCurrentlyPlaying] = useState(null); // Track the currently playing episode
 
   // Sync the play/pause state with the audio element
   useEffect(() => {
@@ -15,7 +12,7 @@ const AudioPlayer = ({ episode }) => {
     } else if (audioRef.current) {
       audioRef.current.pause(); // Pause the audio when not playing
     }
-  }, [isPlaying]); // Only sync play/pause state when 'isPlaying' changes
+  }, [isPlaying]);
 
   // Update current time and duration when audio is playing
   useEffect(() => {
@@ -29,22 +26,21 @@ const AudioPlayer = ({ episode }) => {
     return () => clearInterval(interval); // Clean up the interval on unmount
   }, [isPlaying]);
 
-  // Handle the audio file change when a new episode is selected
-  useEffect(() => {
-    if (currentlyPlaying && currentlyPlaying.id !== episode.id) {
-      setIsPlaying(false); // Stop the previous episode if it's a new episode
-    }
-  }, [episode, currentlyPlaying]); // When the episode or 'currentlyPlaying' changes
-
   // Handle the play/pause logic for the current episode
   const handleAudioClick = () => {
-    if (currentlyPlaying && currentlyPlaying.id === episode.id) {
-      // If this episode is already playing, toggle play/pause
-      setIsPlaying(!isPlaying);
+    // If the clicked episode is already the one currently playing, toggle play/pause
+    if (currentlyPlaying?.id === episode.id) {
+      setIsPlaying(!isPlaying); // Toggle play/pause when clicking the same episode
     } else {
-      // If it's a new episode, set it as currently playing and start playing it
-      setCurrentlyPlaying(episode); // Set the current episode as playing
-      setIsPlaying(true); // Start playing the new episode
+      // Pause the previously playing audio if a new episode is selected
+      if (currentlyPlaying?.id && audioRef.current) {
+        audioRef.current.pause();
+        setIsPlaying(false); // Stop the previous episode
+      }
+
+      // Start playing the selected episode
+      setCurrentlyPlaying(episode); // Set the new episode as currently playing
+      setIsPlaying(true); // Start playback
     }
   };
 
@@ -52,7 +48,9 @@ const AudioPlayer = ({ episode }) => {
   const handleSeekChange = (event) => {
     const newTime = event.target.value;
     setCurrentTime(newTime);
-    audioRef.current.currentTime = newTime; // Seek to the new time in the audio
+    if (audioRef.current) {
+      audioRef.current.currentTime = newTime;
+    }
   };
 
   return (
@@ -60,7 +58,7 @@ const AudioPlayer = ({ episode }) => {
       <div className="audio-controls">
         {/* Play/Pause Button */}
         <button onClick={handleAudioClick} className="play-pause-button">
-          {isPlaying && currentlyPlaying.id === episode.id ? 'Pause' : 'Play'}
+          {isPlaying && currentlyPlaying?.id === episode.id ? 'Pause' : 'Play'}
         </button>
 
         {/* Audio progress tracker */}

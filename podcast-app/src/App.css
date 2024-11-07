@@ -3,6 +3,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  box-sizing: border-box; /* Ensures padding and margin don't affect layout */
 }
 
 /* Navbar Styling */
@@ -158,6 +159,11 @@ body {
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 20px;
+}
+
+/* Main Content Area */
+.main-content {
+  padding: 20px;
 }
 
 

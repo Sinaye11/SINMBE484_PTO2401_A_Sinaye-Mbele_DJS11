@@ -1,13 +1,16 @@
-// src/components/Navbar.js
 import React from 'react';
-import { Link } from 'react-router-dom'; // Using React Router for navigation
+import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png'; // Assuming logo is placed in the assets folder
 
 const Navbar = () => {
   return (
     <nav className="navbar">
-      <ul>
-        <li><Link to="/">Home</Link></li> {/* Home link */}
-        <li><Link to="/favourites">Favourites</Link></li> {/* Favourites link */}
+      <div className="logo-container">
+        <img src={logo} alt="Logo" className="logo" />
+      </div>
+      <ul className="nav-links">
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/favourites">Favourites</Link></li>
       </ul>
     </nav>
   );

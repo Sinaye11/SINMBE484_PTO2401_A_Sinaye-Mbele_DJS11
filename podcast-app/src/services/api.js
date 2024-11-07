@@ -1,5 +1,3 @@
-//Fetch data from the API
-
 // src/services/api.js
 
 const API_URL = 'https://podcast-api.netlify.app'; // Base URL for the podcast API
@@ -29,7 +27,6 @@ export const fetchShowDetails = async (id) => {
       throw new Error(`Failed to fetch show details: ${response.statusText}`);
     }
     const data = await response.json();
-    console.log('Fetched Show Details:', data); // Log the data for inspection
     return data; // Returns detailed information about the show
   } catch (error) {
     console.error('Error fetching show details:', error);
@@ -68,4 +65,3 @@ export const getFavourites = async () => {
     throw error; // Propagate the error to the caller
   }
 };
-

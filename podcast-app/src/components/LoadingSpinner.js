@@ -1,5 +1,4 @@
 // src/components/LoadingSpinner.js
-
 import React from 'react';
 import './LoadingSpinner.css'; // Optional: Import CSS for spinner styling
 
