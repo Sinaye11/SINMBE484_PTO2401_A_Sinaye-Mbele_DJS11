@@ -79,9 +79,9 @@ const ShowDetail = () => {
       {selectedSeason && (
         <div className="episodes">
           <h4>Episodes of {selectedSeason.title}</h4>
-          {selectedSeason.episodes.map((episode) => (
+          {selectedSeason.episodes.map((episode, index) => (
             <div key={episode.id} className="episode-card">
-              <h5>{episode.title}</h5>
+              <h5>Episode {index + 1}: {episode.title}</h5> {/* Display episode number */}
               <p>{episode.description}</p>
               {episode.file && (
                 <AudioPlayer
