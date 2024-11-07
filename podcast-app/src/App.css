@@ -36,3 +36,71 @@
     transform: rotate(360deg);
   }
 }
+
+/*ShowCard*/
+
+.show-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  width: 250px;
+  text-align: center;
+}
+
+.show-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.show-card h2 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.show-card p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.show-card .view-show-details {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 8px 16px;
+  background-color: #007BFF;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.show-card .view-show-details:hover {
+  background-color: #0056b3;
+}
+/* Episode card */
+
+.show-detail {
+  padding: 20px;
+}
+
+.episode-card {
+  background-color: #f0f0f0;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+

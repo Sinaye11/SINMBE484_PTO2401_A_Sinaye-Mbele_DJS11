@@ -1,30 +1,47 @@
-// src/pages/Favourites.js
-import React, { useEffect, useState } from 'react';
-import FavouritesList from '../components/FavouritesList';
-import { getStoredFavourites, removeFromFavourites, saveToFavourites } from '../utils/localStorage';
+//Shows a list of favourite episodes
+
+import React, { useEffect } from 'react';
+import { useFavourites } from '../context/FavouritesContext';
 
 const Favourites = () => {
-  const [favourites, setFavourites] = useState([]);
+  const { favourites, setFavourites, removeFavourite } = useFavourites();
+
+  const handleRemoveFavourite = (episodeId) => {
+    removeFavourite(episodeId);
+  };
 
   useEffect(() => {
-    // Load favourites from local storage on component mount
-    setFavourites(getStoredFavourites());
-  }, []);
+    const fetchFavourites = async () => {
+      try {
+        const response = await fetch('/api/favourites');
+        if (!response.ok) {
+          throw new Error('Failed to fetch favourites');
+        }
+        const data = await response.json();
+        setFavourites(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  const handleAddFavourite = (item) => {
-    saveToFavourites(item);
-    setFavourites(getStoredFavourites()); // Update state with new favorites list
-  };
-
-  const handleRemoveFavourite = (id) => {
-    removeFromFavourites(id);
-    setFavourites(getStoredFavourites()); // Update state with new favorites list
-  };
+    fetchFavourites();
+  }, [setFavourites]);
 
   return (
-    <div className="favourites-page">
-      <h1>My Favourites</h1>
-      <FavouritesList favourites={favourites} onRemoveFavourite={handleRemoveFavourite} />
+    <div>
+      <h2>Favourites</h2>
+      <div>
+        {favourites.length > 0 ? (
+          favourites.map((episode) => (
+            <div key={episode.id} className="favourite-episode">
+              <h3>{episode.title}</h3>
+              <button onClick={() => handleRemoveFavourite(episode.id)}>Remove from Favourites</button>
+            </div>
+          ))
+        ) : (
+          <p>No favourites yet!</p>
+        )}
+      </div>
     </div>
   );
 };
