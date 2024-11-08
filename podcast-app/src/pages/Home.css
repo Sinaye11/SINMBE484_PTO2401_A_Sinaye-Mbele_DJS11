@@ -1,3 +1,5 @@
+/* src/styles/Home.css */
+
 .home-page {
   text-align: center;
   padding: 20px;
@@ -5,20 +7,43 @@
 
 .header {
   display: flex;
-  align-items: center; /* Vertically center the logo and text */
-  justify-content: center; /* Center them horizontally */
-  gap: 8px; /* Reduce space between logo and text */
-}
-
-.logo {
-  height: 10px; /* Very small height for the logo */
-  width: auto;  /* Maintain aspect ratio */
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 h1 {
   font-size: 2rem;
   font-weight: bold;
-  margin: 0; /* Remove margin to ensure tight alignment */
+  margin: 0;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  margin: 20px auto;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+.carousel-item {
+  text-align: center;
+  padding: 10px;
+}
+
+.carousel-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-item h3 {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #333;
 }
 
 .show-list {
@@ -30,32 +55,52 @@ h1 {
 }
 
 .show-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px;
+  width: 100%;
+  max-width: 350px;
   text-align: center;
-  width: 200px;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.show-image {
+.show-card:hover {
+  transform: translateY(-5px);
+}
+
+.show-card img {
   width: 100%;
-  height: auto;
+  height: 250px;
+  object-fit: cover;
   border-radius: 8px;
+  margin-bottom: 12px;
 }
 
 .show-title {
-  font-size: 1.2rem;
-  margin-top: 10px;
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.last-modified, .genre {
+  font-size: 0.9rem;
+  color: #888;
 }
 
 .more-info-button {
   display: inline-block;
-  margin-top: 10px;
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
+  margin-top: 12px;
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: #fff;
   text-decoration: none;
+  border-radius: 4px;
 }
 
 .more-info-button:hover {
   background-color: #0056b3;
 }
+
+

@@ -1,6 +1,6 @@
 // src/components/AudioPlayer.js
 import React, { useEffect, useRef, useState } from 'react';
-import { FaMusic } from 'react-icons/fa'; // For placeholder icon
+import { FaMusic } from 'react-icons/fa';
 import './AudioPlayer.css';
 
 const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
@@ -8,21 +8,33 @@ const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
+  // Load saved timestamp progress from localStorage
   useEffect(() => {
-    if (audioRef.current) {
+    if (episode) {
+      const savedProgress = localStorage.getItem(`progress_${episode.id}`);
+      if (savedProgress) setCurrentTime(parseFloat(savedProgress));
+    }
+  }, [episode]);
+
+  // Play/pause logic based on `isPlaying` state
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio) {
       if (isPlaying && episode) {
-        audioRef.current.play();
+        audio.play();
       } else {
-        audioRef.current.pause();
+        audio.pause();
       }
     }
   }, [isPlaying, episode]);
 
+  // Update time and save to localStorage while playing
   useEffect(() => {
     const audio = audioRef.current;
 
     const updateTime = () => {
       setCurrentTime(audio.currentTime);
+      localStorage.setItem(`progress_${episode.id}`, audio.currentTime);
     };
 
     const updateDuration = () => {
@@ -42,28 +54,30 @@ const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
     };
   }, [episode]);
 
+  // Handle play/pause button click
   const handlePlayPause = () => {
     if (episode) {
       setIsPlaying(!isPlaying);
     }
   };
 
+  // Handle seek bar changes
   const handleSeek = (e) => {
     const newTime = e.target.value;
     audioRef.current.currentTime = newTime;
     setCurrentTime(newTime);
+    localStorage.setItem(`progress_${episode.id}`, newTime);
   };
 
+  // Format time for display
   const formatTime = (time) => {
     if (isNaN(time)) return '0:00';
     const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60)
-      .toString()
-      .padStart(2, '0');
+    const seconds = Math.floor(time % 60).toString().padStart(2, '0');
     return `${minutes}:${seconds}`;
   };
 
-  // Apply pulsating class conditionally based on isPlaying state
+  // Dynamic class for player based on state
   const playerClassName = `audio-player ${episode ? 'active' : 'inactive'} ${isPlaying ? 'pulsating' : ''}`;
 
   return (
