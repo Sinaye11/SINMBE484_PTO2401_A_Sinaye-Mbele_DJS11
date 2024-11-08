@@ -1,5 +1,6 @@
-// AudioPlayer.js
+// src/components/AudioPlayer.js
 import React, { useEffect, useRef, useState } from 'react';
+import { FaMusic } from 'react-icons/fa'; // Importing an icon for a better placeholder
 import './AudioPlayer.css';
 
 const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
@@ -70,23 +71,6 @@ const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
   // Adjust the className for conditional styling
   const playerClassName = episode ? 'audio-player active' : 'audio-player inactive';
 
-  // Add beforeunload event listener to prompt user when audio is playing
-  useEffect(() => {
-    const handleBeforeUnload = (e) => {
-      if (isPlaying) {
-        e.preventDefault();
-        // Chrome requires returnValue to be set
-        e.returnValue = '';
-      }
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [isPlaying]);
-
   return (
     <div className={playerClassName}>
       {episode ? (
@@ -127,7 +111,9 @@ const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
         </>
       ) : (
         <div className="no-episode">
-          <p>No episode selected.</p>
+          <FaMusic size={60} color="#999" />
+          <h2>No Episode Selected</h2>
+          <p>Select an episode to start listening.</p>
         </div>
       )}
     </div>
