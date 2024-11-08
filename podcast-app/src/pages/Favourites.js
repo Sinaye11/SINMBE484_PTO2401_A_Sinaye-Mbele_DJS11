@@ -2,6 +2,19 @@
 import React, { useEffect, useState } from 'react';
 import { useFavourites } from '../context/FavouritesContext';
 
+// Genre mapping based on ID
+const genreMap = {
+  1: 'Personal Growth',
+  2: 'Investigative Journalism',
+  3: 'History',
+  4: 'Comedy',
+  5: 'Entertainment',
+  6: 'Business',
+  7: 'Fiction',
+  8: 'News',
+  9: 'Kids and Family'
+};
+
 const Favourites = ({ setCurrentEpisode, setIsPlaying, currentlyPlaying, isPlaying }) => {
   const { favourites, setFavourites, removeFavourite } = useFavourites();
   const [sortOrder, setSortOrder] = useState('title-asc'); // Sorting control
@@ -38,12 +51,9 @@ const Favourites = ({ setCurrentEpisode, setIsPlaying, currentlyPlaying, isPlayi
     removeFavourite(episodeId);
   };
 
-  // Extract unique genres from favorites
-  const genres = [...new Set(favourites.flatMap(episode => episode.genres || []))];
-
   // Filter and group episodes by genre, show, and season
   const groupedFavourites = favourites
-    .filter(episode => !selectedGenre || episode.genres?.includes(selectedGenre))
+    .filter(episode => !selectedGenre || episode.genres?.includes(parseInt(selectedGenre)))
     .reduce((groups, episode) => {
       const showKey = `${episode.showTitle} - Season ${episode.seasonNumber}`;
       if (!groups[showKey]) {
@@ -80,9 +90,9 @@ const Favourites = ({ setCurrentEpisode, setIsPlaying, currentlyPlaying, isPlayi
         <label>Filter by Genre: </label>
         <select value={selectedGenre} onChange={(e) => setSelectedGenre(e.target.value)}>
           <option value="">All Genres</option>
-          {genres.map((genre) => (
-            <option key={genre} value={genre}>
-              {genre}
+          {Object.entries(genreMap).map(([id, title]) => (
+            <option key={id} value={id}>
+              {title}
             </option>
           ))}
         </select>
