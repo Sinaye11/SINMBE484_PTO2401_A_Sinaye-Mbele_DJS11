@@ -1,110 +1,90 @@
-/* src/components/AudioPlayer.css */
-
+/* Fixed audio player container positioned at the top-right of the screen */
 .audio-player {
   position: fixed;
   top: 0;
   right: 0; 
-  width: 300px; /* Width of the player */
+  width: 300px;
   background-color: #ffffff;
-  border: 1px solid #ddd; 
-  padding: 10px; /* Reduced padding for a compact look */
+  border: 1px solid #ddd;
+  padding: 10px;
   display: flex;
-  flex-direction: column; 
-  align-items: flex-start; 
+  flex-direction: column;
+  align-items: flex-start;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   border-radius: 8px;
   transition: all 0.3s ease;
 }
 
+/* Active state for the player when audio is playing */
 .audio-player.active {
-  border-color: #2980b9; /* Change border color when playing */
-  background-color: #f0f8ff; /* Light blue background when audio is playing */
+  border-color: #2980b9;
+  background-color: #f0f8ff;
+  animation: pulse 1s infinite;
 }
 
+/* Display and align audio information */
 .audio-info {
   display: flex;
   align-items: center;
-  margin-bottom: 4px; 
+  margin-bottom: 4px;
 }
 
+/* Episode image thumbnail */
 .audio-player-image {
-  width: 30px; 
-  height: 30px; 
-  margin-right: 8px; 
+  width: 30px;
+  height: 30px;
+  margin-right: 8px;
   object-fit: cover;
   border-radius: 4px;
 }
 
-.episode-details {
-  display: flex;
-  flex-direction: column;
-}
-
+/* Episode title styling */
 .episode-title {
   font-weight: bold;
+  font-size: 0.9em;
   margin: 0;
-  font-size: 0.9em; 
 }
 
+/* Audio control buttons container */
 .audio-controls {
   display: flex;
   align-items: center;
   flex: 1;
 }
 
+/* Play/pause button with hover effect */
 .play-pause-button {
-  padding: 5px 10px; 
-  font-size: 0.9em; 
+  padding: 5px 10px;
+  font-size: 0.9em;
   cursor: pointer;
-  margin-right: 5px; 
-  transition: background-color 0.3s ease; /* Add a transition effect */
+  margin-right: 5px;
+  transition: background-color 0.3s ease;
 }
 
 .play-pause-button:hover {
-  background-color: #2980b9; /* Change background on hover */
-  color: #ffffff; /* Change text color on hover */
+  background-color: #2980b9;
+  color: #ffffff;
 }
 
+/* Styling for the seek bar */
 .seek-bar {
   flex: 1;
-  margin-right: 5px; 
+  margin-right: 5px;
 }
 
-.time-info {
-  font-size: 0.8em; 
-}
-
+/* Display inactive state message */
 .no-episode {
   text-align: center;
   color: #666;
-  font-size: 0.9em; 
+  font-size: 0.9em;
   width: 100%;
 }
 
-.no-episode h2 {
-  margin: 5px 0; 
-}
-
-.audio-player.inactive .audio-info,
-.audio-player.inactive .audio-controls,
-.audio-player.inactive .time-info {
-  display: none;
-}
-
-/* Pulsating effect for active player */
+/* Pulsating animation keyframes */
 @keyframes pulse {
-  0% {
-      transform: scale(1);
-  }
-  50% {
-      transform: scale(1.05);
-  }
-  100% {
-      transform: scale(1);
-  }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
-.audio-player.active {
-  animation: pulse 1s infinite; /* Apply pulsating animation */
-}
