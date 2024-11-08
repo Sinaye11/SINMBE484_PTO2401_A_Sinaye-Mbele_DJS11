@@ -1,6 +1,7 @@
+// src/components/GenreFilter.js
 import React, { useEffect, useState } from 'react';
 
-// Genre ID to Title Mapping
+// Map of genre IDs to genre titles for display
 const genreMapping = {
   1: 'Personal Growth',
   2: 'Investigative Journalism',
@@ -13,17 +14,29 @@ const genreMapping = {
   9: 'Kids and Family',
 };
 
+/**
+ * GenreFilter Component
+ *
+ * Allows users to filter shows by genre.
+ *
+ * Props:
+ * - genres: Array of genre IDs to display in the dropdown.
+ * - onFilterChange: Function to call when the selected genre changes.
+ * - currentGenre: Currently selected genre ID.
+ */
 const GenreFilter = ({ genres, onFilterChange, currentGenre }) => {
   const [selectedGenre, setSelectedGenre] = useState(currentGenre || '');
 
+  // Update selected genre when `currentGenre` prop changes
   useEffect(() => {
-    setSelectedGenre(currentGenre); // Sync with current genre from parent
+    setSelectedGenre(currentGenre);
   }, [currentGenre]);
 
+  // Handle dropdown change and notify parent
   const handleGenreChange = (event) => {
     const selected = event.target.value;
-    setSelectedGenre(selected); // Update local state
-    onFilterChange(selected); // Pass selected genre to parent
+    setSelectedGenre(selected); // Update local state with selected genre
+    onFilterChange(selected); // Notify parent of selected genre change
   };
 
   return (
