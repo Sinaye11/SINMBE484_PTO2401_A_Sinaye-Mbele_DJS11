@@ -1,67 +1,57 @@
-.show-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  margin: 16px;
-  width: 100%;
-  max-width: 300px; /* Max width for larger screens */
+/* Show Detail Styling */
+.show-detail {
+  margin-left: 260px;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  transition: transform 0.3s ease; /* Smooth hover effect */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
 }
 
-.show-card:hover {
-  transform: translateY(-5px); /* Slight lift effect on hover */
+.show-image-container {
+  max-width: 250px;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
-.show-card img {
+.show-card-image {
   width: 100%;
   height: auto;
+  object-fit: contain;
   border-radius: 8px;
-  margin-bottom: 12px;
-  object-fit: cover; /* Ensures image covers the container */
 }
 
-.show-card h2 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 8px; /* Space between title and button */
+/* Show Info Section */
+.show-info {
+  text-align: left;
+  max-width: 600px;
+  margin-bottom: 20px;
 }
 
-.show-card p {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 12px; /* Space below genre */
+.episodes-section {
+  width: 100%;
+  max-width: 600px;
 }
 
-/* Styling for the last updated date */
-.show-card .last-updated {
-  font-size: 0.9rem;
-  color: #888; /* Subtle color for less emphasis */
-  margin-top: 4px;
-  margin-bottom: 12px; /* Space below the last updated date */
+.episodes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.show-card .view-show-details {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 8px 16px;
-  background-color: #007BFF;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 4px;
-}
-
-.show-card .view-show-details:hover {
-  background-color: #0056b3;
-}
-
-/* Optional: A flex container for the show cards if needed */
-.show-list {
+.episode-item {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  gap: 16px; /* Space between cards */
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
-  
+.episode-title {
+  font-weight: bold;
+}
+
+.episode-date, .episode-duration {
+  font-size: 0.9rem;
+  color: #888;
+}

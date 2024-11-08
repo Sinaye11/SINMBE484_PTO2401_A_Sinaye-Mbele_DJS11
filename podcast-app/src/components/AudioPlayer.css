@@ -1,115 +1,26 @@
-/* Main Audio Player */
+/* Full AudioPlayer.css */
+
 .audio-player {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background: #1f1f1f;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    color: #fff;
-    transition: all 0.3s ease;
-  }
-  
-  /* Hover effect on the whole player */
-  .audio-player:hover {
-    transform: scale(1.02);
-  }
-  
-  /* Audio Controls Section */
-  .audio-controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  /* Play/Pause Button */
-  .play-pause-button {
-    background-color: #007bff;
-    color: white;
-    font-size: 18px;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  /* Play/Pause Button Hover State */
-  .play-pause-button:hover {
-    background-color: #0056b3;
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Progress Bar Container */
-  .progress-bar-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-  }
-  
-  /* Progress Bar */
-  .progress-bar {
-    width: 100%;
-    max-width: 500px;
-    height: 8px;
-    background-color: #333;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  /* Progress Bar - Hover */
-  .progress-bar:hover {
-    background-color: #555;
-  }
-  
-  /* Progress Time Text */
-  .progress-time {
-    font-size: 14px;
-    color: #bbb;
-    margin-top: 5px;
-    font-weight: 500;
-  }
-  
-  /* Currently Playing Text */
-  p {
-    font-size: 16px;
-    color: #ddd;
-    margin-top: 10px;
-    font-weight: 500;
-  }
-  
-  /* Visual enhancements */
-  .progress-bar::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: #007bff;
-    cursor: pointer;
-  }
-  
-  .progress-bar::-webkit-slider-thumb:hover {
-    background: #0056b3;
-  }
-  
-  .progress-bar::-moz-range-thumb {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: #007bff;
-    cursor: pointer;
-  }
-  
-  .progress-bar::-moz-range-thumb:hover {
-    background: #0056b3;
-  }
-  
+  margin-top: 20px; /* Add space above the audio player */
+  padding: 15px;
+  background-color: #1f1f1f;
+  color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Title of the currently playing episode */
+.audio-player h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: normal;
+  color: #e0e0e0;
+  text-align: center;
+}
+
+/* Audio controls styling */
+.audio-player audio {
+  width: 100%;
+  max-width: 600px;
+  outline: none;
+}

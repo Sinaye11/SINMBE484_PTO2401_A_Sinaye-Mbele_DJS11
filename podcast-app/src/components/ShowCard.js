@@ -1,57 +1,71 @@
-import PropTypes from 'prop-types'; // Import PropTypes for prop validation
+// ShowCard.js
+import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './ShowCard.css';
 
-// Individual show card component to display basic show details
-const ShowCard = ({ show }) => {
-  // Destructure show properties for easy access
-  const { id, title, genre, image, lastUpdated } = show;
+const ShowCard = ({ show, isDetailView = false }) => {
+  if (!show) {
+    return <p>Loading...</p>; // Display a loading message or spinner if show is null
+  }
 
-  // Format the last updated date to a readable format (e.g., "November 7, 2024")
+  const { title, genre = "Unknown", image, lastUpdated, description } = show;
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     }).format(date);
   };
 
+  const mockEpisodes = [
+    { id: 1, title: 'Episode 1: Introduction', date: '2 days ago', duration: '45 min' },
+    { id: 2, title: 'Episode 2: Deep Dive', date: '5 days ago', duration: '50 min' },
+    { id: 3, title: 'Episode 3: Expert Interview', date: '1 week ago', duration: '60 min' },
+  ];
+
   return (
-    <div className="show-card">
-      {/* Show image, with a fallback */}
-      <img src={image || '/assets/default-show-image.jpg'} alt={title} className="show-card-image" />
+    <div className={isDetailView ? "show-detail" : "show-card"}>
+      <div className="show-image-container">
+        <img src={image || '/assets/default-show-image.jpg'} alt={title} className="show-card-image" />
+      </div>
+      <div className="show-info">
+        <h2>{title}</h2>
+        <p><strong>Genre:</strong> {genre}</p>
+        {lastUpdated && <p><strong>Last updated:</strong> {formatDate(lastUpdated)}</p>}
+        <p>{description}</p>
+      </div>
 
-      {/* Show title */}
-      <h2>{title}</h2>
-
-      {/* Show genre */}
-      <p><strong>Genre:</strong> {genre}</p>
-
-      {/* Display last updated date */}
-      {lastUpdated && (
-        <p className="last-updated">
-          <strong>Last updated:</strong> {formatDate(lastUpdated)}
-        </p>
+      {isDetailView && (
+        <div className="episodes-section">
+          <h3>Episodes</h3>
+          <ul className="episodes-list">
+            {mockEpisodes.map((episode) => (
+              <li key={episode.id} className="episode-item">
+                <div className="episode-info">
+                  <p className="episode-title">{episode.title}</p>
+                  <p className="episode-date">{episode.date}</p>
+                </div>
+                <p className="episode-duration">{episode.duration}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
-
-      {/* Link to the detailed show page */}
-      <Link to={`/show/${id}`} className="view-show-details">
-        View Show Details
-      </Link>
     </div>
   );
 };
 
 ShowCard.propTypes = {
   show: PropTypes.shape({
-    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
-    genre: PropTypes.string.isRequired,
+    genre: PropTypes.string, // Make genre optional
     image: PropTypes.string,
     lastUpdated: PropTypes.string,
-  }).isRequired,
+    description: PropTypes.string,
+  }),
+  isDetailView: PropTypes.bool,
 };
 
 export default ShowCard;

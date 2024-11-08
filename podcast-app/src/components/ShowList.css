@@ -1,75 +1,55 @@
-/* Center the main title and logo */
-.page-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  .logo {
-    height: 40px; /* Adjust height for a smaller logo */
-    margin-right: 10px; /* Space between logo and title */
-  }
-  
-  .page-title {
-    font-size: 2rem;
-    color: #fff;
-  }
-  
-  /* Layout for the show cards */
-  .show-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
-  }
-  
-  /* Show card styling */
-  .show-card {
-    width: 200px;
-    background-color: #1c1c1e;
-    color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    text-align: center;
-    transition: transform 0.2s;
-  }
-  
-  .show-card:hover {
-    transform: scale(1.05);
-  }
-  
-  .show-card img {
-    width: 100%;
-    height: auto;
-    border-radius: 4px;
-    margin-bottom: 10px;
-  }
-  
-  .show-card h3 {
-    font-size: 1.1rem;
-    margin: 10px 0;
-  }
-  
-  .show-card p {
-    font-size: 0.9rem;
-    color: #aaa;
-    margin-bottom: 10px;
-  }
-  
-  .more-info-button {
-    background-color: #555;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .more-info-button:hover {
-    background-color: #333;
-  }
-  
+/* Layout for the show cards */
+.show-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.show-card {
+  width: 250px; /* Adjust width for better fit */
+  background-color: #1c1c1e;
+  color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.show-card:hover {
+  transform: scale(1.05);
+}
+
+.show-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.show-card h3 {
+  font-size: 1.1rem;
+  margin: 10px 0;
+}
+
+.show-card p {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+
+.more-info-button {
+  background-color: #555;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.more-info-button:hover {
+  background-color: #333;
+}
