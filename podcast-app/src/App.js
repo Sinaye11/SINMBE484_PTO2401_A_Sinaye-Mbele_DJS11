@@ -91,7 +91,7 @@ const ShowDetailWrapper = ({ setCurrentEpisode, setIsPlaying }) => {
                             ...episode,
                             showTitle: selectedShow.title,
                             showImage: selectedShow.image,
-                            // Include any other necessary data
+                            episodeNumber: episodeIndex + 1, // Add episode number
                           });
                           setIsPlaying(true);
                         }}

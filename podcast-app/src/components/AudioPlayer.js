@@ -70,6 +70,23 @@ const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
   // Adjust the className for conditional styling
   const playerClassName = episode ? 'audio-player active' : 'audio-player inactive';
 
+  // Add beforeunload event listener to prompt user when audio is playing
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isPlaying) {
+        e.preventDefault();
+        // Chrome requires returnValue to be set
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isPlaying]);
+
   return (
     <div className={playerClassName}>
       {episode ? (
@@ -81,8 +98,9 @@ const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
               className="audio-player-image"
             />
             <div className="episode-details">
-              <p className="episode-title">{episode.title}</p>
-              {/* You can include additional details if needed */}
+              <p className="episode-title">
+                Episode {episode.episodeNumber}: {episode.title}
+              </p>
             </div>
           </div>
           <div className="audio-controls">
