@@ -2,22 +2,28 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import AudioPlayer from '../components/AudioPlayer';
+import { useFavourites } from '../context/FavouritesContext';
 
 const ShowDetail = () => {
   const { id } = useParams();
+  const { addFavourite, isFavourite, removeFavourite } = useFavourites();
   const [show, setShow] = useState(null);
   const [error, setError] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(null);
   const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(null); // To track which menu is open
 
-  // Handle play/pause for episodes
+  const toggleMenu = (episodeId) => {
+    setMenuVisible((prev) => (prev === episodeId ? null : episodeId));
+  };
+
   const handlePlayPause = (episode) => {
     if (currentlyPlaying && currentlyPlaying.id === episode.id) {
-      setIsPlaying(!isPlaying);  // Toggle play/pause state
+      setIsPlaying(!isPlaying);
     } else {
-      setCurrentlyPlaying(episode);  // Set the new episode as currently playing
-      setIsPlaying(true);  // Start playing the episode
+      setCurrentlyPlaying(episode);
+      setIsPlaying(true);
     }
   };
 
@@ -36,7 +42,7 @@ const ShowDetail = () => {
 
         const data = await response.json();
         setShow(data);
-        setSelectedSeason(data.seasons && data.seasons[0]); // Set default selected season
+        setSelectedSeason(data.seasons && data.seasons[0]);
       } catch (error) {
         setError(`Error fetching show details: ${error.message}`);
       }
@@ -63,7 +69,6 @@ const ShowDetail = () => {
       {show.image && <img src={show.image} alt={show.title} />}
       <p>{show.description}</p>
 
-      {/* Display the seasons */}
       <div className="seasons">
         <h3>Seasons</h3>
         <div className="seasons-list">
@@ -75,13 +80,12 @@ const ShowDetail = () => {
         </div>
       </div>
 
-      {/* Display episodes for selected season */}
       {selectedSeason && (
         <div className="episodes">
           <h4>Episodes of {selectedSeason.title}</h4>
           {selectedSeason.episodes.map((episode, index) => (
             <div key={episode.id} className="episode-card">
-              <h5>Episode {index + 1}: {episode.title}</h5> {/* Display episode number */}
+              <h5>Episode {index + 1}: {episode.title}</h5>
               <p>{episode.description}</p>
               {episode.file && (
                 <AudioPlayer
@@ -90,8 +94,18 @@ const ShowDetail = () => {
                   setCurrentlyPlaying={setCurrentlyPlaying}
                   isPlaying={isPlaying}
                   setIsPlaying={setIsPlaying}
-                  handlePlayPause={handlePlayPause}  // Pass handlePlayPause here
+                  handlePlayPause={handlePlayPause}
                 />
+              )}
+              <button className="three-dot-button" onClick={() => toggleMenu(episode.id)}>⋮</button>
+              {menuVisible === episode.id && (
+                <div className="dropdown-menu">
+                  {isFavourite(episode.id) ? (
+                    <button onClick={() => removeFavourite(episode.id)}>Remove from Favourites</button>
+                  ) : (
+                    <button onClick={() => addFavourite(episode)}>Add to Favourites</button>
+                  )}
+                </div>
               )}
             </div>
           ))}

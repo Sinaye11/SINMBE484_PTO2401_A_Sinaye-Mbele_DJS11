@@ -1,18 +1,19 @@
+// src/components/Sidebar.js
 import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from '../assets/logo.png';
+import { NavLink } from 'react-router-dom';
+import './Sidebar.css'; // Ensure this path is correct and the file exists
 
 const Sidebar = () => {
   return (
-    <div className="sidebar">
-      <img src={logo} alt="App Logo" className="sidebar-logo" />
-      <h2>Podcast App</h2>
-      <ul>
-        <li><Link to="/" aria-label="Home">Home</Link></li>
-        <li><Link to="/favourites" aria-label="Favourites">Favourites</Link></li>
-        <li><Link to="/genres" aria-label="Genres">Genres</Link></li>
-      </ul>
-    </div>
+    <nav className="sidebar">
+      <NavLink to="/" className="nav-link" activeClassName="active" exact>
+        Home
+      </NavLink>
+      <NavLink to="/favourites" className="nav-link" activeClassName="active">
+        Favourites
+      </NavLink>
+      {/* Add more navigation links as needed */}
+    </nav>
   );
 };
 

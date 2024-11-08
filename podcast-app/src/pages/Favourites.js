@@ -1,51 +1,73 @@
-//Shows a list of favourite episodes
-
-import React, { useEffect } from 'react';
+// src/pages/Favourites.js
+import React, { useEffect, useState } from 'react';
+import AudioPlayer from '../components/AudioPlayer';
 import { useFavourites } from '../context/FavouritesContext';
 
 const Favourites = () => {
-  const { favourites, setFavourites, removeFavourite } = useFavourites();
-
-  const handleRemoveFavourite = (episodeId) => {
-    removeFavourite(episodeId);
-  };
+  const { favourites, removeFavourite } = useFavourites();
+  const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    const fetchFavourites = async () => {
-      try {
-        const response = await fetch('/api/favourites');
-        if (!response.ok) {
-          throw new Error('Failed to fetch favourites');
-        }
-        const data = await response.json();
-        setFavourites(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    console.log("Favourites on Favourites page load:", favourites);
+  }, [favourites]);
 
-    fetchFavourites();
-  }, [setFavourites]);
+  const handlePlayPause = (episode) => {
+    if (currentlyPlaying && currentlyPlaying.id === episode.id) {
+      setIsPlaying(!isPlaying);
+    } else {
+      setCurrentlyPlaying(episode);
+      setIsPlaying(true);
+    }
+  };
 
   return (
     <div>
       <h2>Favourites</h2>
-      <div>
-        {favourites.length > 0 ? (
-          favourites.map((episode) => (
-            <div key={episode.id} className="favourite-episode">
-              <h3>{episode.title}</h3>
-              <button onClick={() => handleRemoveFavourite(episode.id)}>Remove from Favourites</button>
-            </div>
-          ))
-        ) : (
-          <p>No favourites yet!</p>
-        )}
-      </div>
+      {favourites.length > 0 ? (
+        <ul>
+          {favourites.map((episode) => (
+            <li key={episode.id} className="favourite-item">
+              <div className="favourite-content">
+                {/* Display the season image if available */}
+                {episode.seasonImage && (
+                  <img
+                    src={episode.seasonImage}
+                    alt={episode.title}
+                    className="favourite-image"
+                    style={{ width: '50px', marginRight: '10px' }}
+                  />
+                )}
+                <h3>{episode.title}</h3>
+                <p><strong>Season:</strong> {episode.seasonNumber}</p>
+                <p><strong>Description:</strong> {episode.description}</p>
+                <p><strong>Added At:</strong> {new Date(episode.addedAt).toLocaleString()}</p>
+
+                {/* Play/Pause button to control audio */}
+                <button onClick={() => handlePlayPause(episode)}>
+                  {currentlyPlaying && currentlyPlaying.id === episode.id && isPlaying ? 'Pause' : 'Play'}
+                </button>
+
+                <button onClick={() => removeFavourite(episode.id)}>Remove from Favourites</button>
+              </div>
+              
+              {/* AudioPlayer component only renders if the episode has an audio file */}
+              {currentlyPlaying && currentlyPlaying.id === episode.id && (
+                <AudioPlayer
+                  episode={currentlyPlaying}
+                  isPlaying={isPlaying}
+                  setIsPlaying={setIsPlaying}
+                  handlePlayPause={() => handlePlayPause(episode)}
+                />
+              )}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No favourites yet!</p>
+      )}
     </div>
   );
 };
 
 export default Favourites;
-
-
