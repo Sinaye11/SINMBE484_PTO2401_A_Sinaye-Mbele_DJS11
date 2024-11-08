@@ -1,20 +1,19 @@
+// src/index.js
 import React from 'react';
-import ReactDOM from 'react-dom/client'; // React 18: createRoot API for rendering
-import App from './App'; // Import the App component
-import { FavouritesProvider } from './context/FavouritesContext'; // Import FavouritesProvider
-import './index.css'; // Import global styles
+import ReactDOM from 'react-dom/client'; // React 18: use createRoot API for rendering
+import App from './App'; // Import the main App component
+import { FavouritesProvider } from './context/FavouritesContext'; // Import the context provider for managing favourites
+import './index.css'; // Import global styles for the application
 
-// Creates the root element where the app will be rendered
+// Create the root element where the app will be rendered
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-// Render the app inside the root element
+// Render the application inside the root element
 root.render(
   <React.StrictMode>
-    {/* Wrap the App in FavouritesProvider to manage global favourites state */}
+    {/* Wrap the App component in FavouritesProvider to manage the global favourites state */}
     <FavouritesProvider>
-      <App />
+      <App /> {/* Main application component */}
     </FavouritesProvider>
   </React.StrictMode>
 );
-
-

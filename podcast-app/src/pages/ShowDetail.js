@@ -1,67 +1,37 @@
 // src/pages/ShowDetail.js
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import AudioPlayer from '../components/AudioPlayer';
+import { Link, useParams } from 'react-router-dom';
 import { useFavourites } from '../context/FavouritesContext';
 
 const ShowDetail = () => {
-  const { id } = useParams();
+  const { id: showId } = useParams(); // Get showId from URL parameters
   const { addFavourite, isFavourite, removeFavourite } = useFavourites();
   const [show, setShow] = useState(null);
   const [error, setError] = useState(null);
-  const [selectedSeason, setSelectedSeason] = useState(null);
-  const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [menuVisible, setMenuVisible] = useState(null); // To track which menu is open
+  const [loading, setLoading] = useState(true);
 
-  const toggleMenu = (episodeId) => {
-    setMenuVisible((prev) => (prev === episodeId ? null : episodeId));
-  };
-
-  const handlePlayPause = (episode) => {
-    if (currentlyPlaying && currentlyPlaying.id === episode.id) {
-      setIsPlaying(!isPlaying);
-    } else {
-      setCurrentlyPlaying(episode);
-      setIsPlaying(true);
-    }
-  };
-
+  // Fetch show details when the component mounts
   useEffect(() => {
     const fetchShowDetails = async () => {
-      if (!id) {
-        setError("Show ID is missing");
-        return;
-      }
-
       try {
-        const response = await fetch(`https://podcast-api.netlify.app/id/${id}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
+        const response = await fetch(`https://podcast-api.netlify.app/id/${showId}`);
+        if (!response.ok) throw new Error(`Failed to fetch show with status: ${response.status}`);
+        
         const data = await response.json();
-        setShow(data);
-        setSelectedSeason(data.seasons && data.seasons[0]);
+        setShow(data); // Set the show data for rendering
       } catch (error) {
         setError(`Error fetching show details: ${error.message}`);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchShowDetails();
-  }, [id]);
+  }, [showId]);
 
-  const handleSeasonChange = (season) => {
-    setSelectedSeason(season);
-  };
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!show) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <p>Loading show details...</p>;
+  if (error) return <p>{error}</p>;
+  if (!show) return <p>Show not found.</p>;
 
   return (
     <div className="show-detail">
@@ -70,47 +40,17 @@ const ShowDetail = () => {
       <p>{show.description}</p>
 
       <div className="seasons">
-        <h3>Seasons</h3>
+        <h3>Available Seasons</h3>
         <div className="seasons-list">
           {show.seasons.map((season) => (
-            <button key={season.id} onClick={() => handleSeasonChange(season)}>
-              {season.title} ({season.episodes.length} Episodes)
-            </button>
+            <Link to={`/show/${showId}/season/${season.id}`} key={season.id} className="season-link">
+              <button>
+                {season.title} ({season.episodes.length} Episodes)
+              </button>
+            </Link>
           ))}
         </div>
       </div>
-
-      {selectedSeason && (
-        <div className="episodes">
-          <h4>Episodes of {selectedSeason.title}</h4>
-          {selectedSeason.episodes.map((episode, index) => (
-            <div key={episode.id} className="episode-card">
-              <h5>Episode {index + 1}: {episode.title}</h5>
-              <p>{episode.description}</p>
-              {episode.file && (
-                <AudioPlayer
-                  episode={episode}
-                  currentlyPlaying={currentlyPlaying}
-                  setCurrentlyPlaying={setCurrentlyPlaying}
-                  isPlaying={isPlaying}
-                  setIsPlaying={setIsPlaying}
-                  handlePlayPause={handlePlayPause}
-                />
-              )}
-              <button className="three-dot-button" onClick={() => toggleMenu(episode.id)}>⋮</button>
-              {menuVisible === episode.id && (
-                <div className="dropdown-menu">
-                  {isFavourite(episode.id) ? (
-                    <button onClick={() => removeFavourite(episode.id)}>Remove from Favourites</button>
-                  ) : (
-                    <button onClick={() => addFavourite(episode)}>Add to Favourites</button>
-                  )}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };

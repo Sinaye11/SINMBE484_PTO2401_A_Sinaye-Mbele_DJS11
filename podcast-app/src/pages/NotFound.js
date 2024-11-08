@@ -1,15 +1,16 @@
-//404 page for unmatched routes
+// src/pages/NotFound.js
 
-// NotFound page, displayed when the user navigates to a non-existent route
+// NotFound Component
+// This page displays a 404 error message when the user navigates to a non-existent route.
 
-import React from 'react'; // Import React
+import React from 'react';
 
 const NotFound = () => {
   return (
     <div className="not-found">
-      <h1>404 - Page Not Found</h1> {/* Title indicating the page was not found */}
-      <p>The page you are looking for does not exist.</p> {/* Message explaining the error */}
-      <a href="/" className="back-home-link">Go back to Home</a> {/* Link to navigate back to the homepage */}
+      <h1>404 - Page Not Found</h1> {/* Main title for the 404 error */}
+      <p>The page you are looking for does not exist.</p> {/* Informative message for the user */}
+      <a href="/" className="back-home-link">Go back to Home</a> {/* Link for easy navigation back to the homepage */}
     </div>
   );
 };

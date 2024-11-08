@@ -1,7 +1,9 @@
 // src/pages/Favourites.js
+
 import React, { useState } from 'react';
 import { useFavourites } from '../context/FavouritesContext';
 
+// Mapping of genre IDs to genre names for display
 const genreMap = {
   1: 'Personal Growth',
   2: 'Investigative Journalism',
@@ -14,24 +16,35 @@ const genreMap = {
   9: 'Kids and Family'
 };
 
+/**
+ * Favourites Component
+ *
+ * Displays a list of favourite episodes with options to filter by genre, sort, play, and remove favourites.
+ * 
+ * Props:
+ * - setCurrentEpisode: Function to set the current episode for playback.
+ * - setIsPlaying: Function to control playback state.
+ * - currentlyPlaying: The episode currently playing.
+ * - isPlaying: Boolean indicating if an episode is currently playing.
+ */
 const Favourites = ({ setCurrentEpisode, setIsPlaying, currentlyPlaying, isPlaying }) => {
-  const { favourites, removeFavourite } = useFavourites();
-  const [sortOrder, setSortOrder] = useState('title-asc');
-  const [selectedGenre, setSelectedGenre] = useState('');
+  const { favourites, removeFavourite } = useFavourites(); // Access favourites and removal function
+  const [sortOrder, setSortOrder] = useState('title-asc'); // Manage sort order state
+  const [selectedGenre, setSelectedGenre] = useState(''); // Manage selected genre filter
 
+  // Play or pause the selected episode
   const handlePlayPause = (episode) => {
     if (currentlyPlaying && currentlyPlaying.id === episode.id && isPlaying) {
-      setIsPlaying(false); // Pause if the same episode is playing
+      setIsPlaying(false); // Pause if currently playing episode is selected
     } else {
-      setCurrentEpisode(episode); // Set the selected episode for playback
-      setIsPlaying(true); // Start playing
+      setCurrentEpisode(episode); // Set new episode for playback
+      setIsPlaying(true); // Start playback
     }
-    console.log(`Play/Pause triggered for episode ID: ${episode.id}`);
   };
 
+  // Remove the selected episode from favourites
   const handleRemoveFavourite = (episodeId) => {
     removeFavourite(episodeId);
-    console.log(`Remove triggered for episode ID: ${episodeId}`);
   };
 
   return (
@@ -51,7 +64,7 @@ const Favourites = ({ setCurrentEpisode, setIsPlaying, currentlyPlaying, isPlayi
         </select>
       </div>
 
-      {/* Sort Controls */}
+      {/* Sort Options */}
       <div>
         <label>Sort By: </label>
         <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
@@ -62,7 +75,7 @@ const Favourites = ({ setCurrentEpisode, setIsPlaying, currentlyPlaying, isPlayi
         </select>
       </div>
 
-      {/* Render grouped and filtered episodes */}
+      {/* Render Filtered and Sorted Favourites */}
       {favourites.length > 0 ? (
         favourites.map((episode) => (
           <div key={episode.id} className="favourite-item">
@@ -93,7 +106,7 @@ const Favourites = ({ setCurrentEpisode, setIsPlaying, currentlyPlaying, isPlayi
           </div>
         ))
       ) : (
-        <p>No favourites yet!</p>
+        <p>No favourites yet!</p> // Message if no favourites are available
       )}
     </div>
   );
