@@ -142,7 +142,6 @@ const App = () => {
       <div className="app-layout">
         <Sidebar />
 
-        {/* AudioPlayer remains here */}
         <AudioPlayer
           episode={currentEpisode}
           isPlaying={isPlaying}
