@@ -32,7 +32,7 @@ Follow these steps to set up and run the project locally.
 
 1. **Clone the Repository**:
    ```bash
-   git clone <repository-url>
+   git clone: https://github.com/Sinaye11/SINMBE484_PTO2401_A_Sinaye-Mbele_DJS11
    cd podcast-app
   
 2. **Install Dependencies**:
