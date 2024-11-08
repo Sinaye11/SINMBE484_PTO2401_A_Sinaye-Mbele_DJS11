@@ -61,26 +61,29 @@ Resetting Progress: Clear all favorites and playback history using the "Reset Al
 
 ---
 
-**Project Structure**
+## Project Structure
 
-This overview of the project structure helps developers navigate the codebase effectively:
+The following is an organized breakdown of the project structure:
 
-src/
-├── assets/                  # Images, icons, etc.
-├── components/              # Reusable UI components (AudioPlayer, ShowCard, etc.)
-├── context/                 # Context API for managing global state (e.g., Favorites)
-├── hooks/                   # Custom React hooks for shared logic
-├── pages/                   # Main page components (Home, Favourites, ShowDetail, etc.)
-├── services/                # API request functions and other service-related code
-├── utils/                   # Utility functions (helpers for formatting, etc.)
-├── App.css                  # Main styling for the app
-├── App.js                   # Main app component
-├── App.test.js              # Tests for the main app component
-├── index.css                # Global styling
-├── index.js                 # React entry point
-.gitignore                   # Git ignore configuration
-package-lock.json            # Dependency lock file
-package.json                 # Project metadata and dependencies
+- **`src/`** - Main source folder
+  - **`assets/`** - Contains images, icons, and other static assets.
+  - **`components/`** - Reusable UI components, such as `AudioPlayer` and `ShowCard`.
+  - **`context/`** - Global state management with Context API, including `FavouritesContext`.
+  - **`hooks/`** - Custom React hooks for shared logic.
+  - **`pages/`** - Contains main page components like `Home`, `Favourites`, and `ShowDetail`.
+  - **`services/`** - Functions for making API requests and handling external data.
+  - **`utils/`** - Utility functions, such as data formatting helpers.
+  - **`App.css`** - Main styling for the app.
+  - **`App.js`** - Main app component.
+  - **`App.test.js`** - Tests for the main app component.
+  - **`index.css`** - Global CSS styling.
+  - **`index.js`** - Entry point for the React app.
+
+- **Root Files**
+  - **`.gitignore`** - Specifies files and directories to ignore in Git.
+  - **`package-lock.json`** - Locks dependency versions.
+  - **`package.json`** - Contains project metadata, scripts, and dependencies.
+
 
 ---
 
