@@ -1,11 +1,21 @@
+// src/context/FavouritesContext.js
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+// Create the context for managing favourites
 export const FavouritesContext = createContext();
 
+// Custom hook for easy access to the favourites context
 export const useFavourites = () => {
   return useContext(FavouritesContext);
 };
 
+/**
+ * FavouritesProvider Component
+ *
+ * Provides functionality to manage, add, remove, and reset favourite episodes.
+ * Stores favourites in localStorage to maintain them across sessions.
+ */
 export const FavouritesProvider = ({ children }) => {
   const [favourites, setFavourites] = useState([]);
 
@@ -20,6 +30,7 @@ export const FavouritesProvider = ({ children }) => {
     localStorage.setItem('favourites', JSON.stringify(favourites));
   }, [favourites]);
 
+  // Add an episode to favourites if it isn't already present
   const addFavourite = (episode) => {
     setFavourites((prevFavourites) => {
       if (!prevFavourites.some((fav) => fav.id === episode.id)) {
@@ -29,31 +40,28 @@ export const FavouritesProvider = ({ children }) => {
           seasonImage: episode.seasonImage,
           addedAt: new Date().toISOString(),
         };
-        const updatedFavourites = [...prevFavourites, newFavourite];
-        console.log("Updated favourites list:", updatedFavourites);
-        return updatedFavourites;
+        return [...prevFavourites, newFavourite];
       }
       return prevFavourites;
     });
   };
 
+  // Remove an episode from favourites by ID
   const removeFavourite = (episodeId) => {
-    setFavourites((prevFavourites) => {
-      const updatedFavourites = prevFavourites.filter((fav) => fav.id !== episodeId);
-      console.log("Updated favourites after removal:", updatedFavourites);
-      return updatedFavourites;
-    });
+    setFavourites((prevFavourites) => 
+      prevFavourites.filter((fav) => fav.id !== episodeId)
+    );
   };
 
+  // Check if an episode is marked as a favourite
   const isFavourite = (episodeId) => {
     return favourites.some((fav) => fav.id === episodeId);
   };
 
-  // Reset favourites and clear from localStorage
+  // Reset all favourites and clear them from localStorage
   const resetFavourites = () => {
-    setFavourites([]); // Clear the state
-    localStorage.removeItem('favourites'); // Clear favourites from localStorage
-    console.log("Favourites reset");
+    setFavourites([]);
+    localStorage.removeItem('favourites');
   };
 
   return (
@@ -63,10 +71,11 @@ export const FavouritesProvider = ({ children }) => {
         addFavourite,
         removeFavourite,
         isFavourite,
-        resetFavourites, // Make resetFavourites available in context
+        resetFavourites,
       }}
     >
       {children}
     </FavouritesContext.Provider>
   );
 };
+
