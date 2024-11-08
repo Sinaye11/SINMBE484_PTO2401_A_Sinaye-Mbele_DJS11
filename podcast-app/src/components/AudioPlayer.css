@@ -88,3 +88,126 @@
   100% { transform: scale(1); }
 }
 
+/* Responsive styling for different universal screen sizes */
+@media (max-width: 1200px) {
+  /* For large desktops */
+  .audio-player {
+    width: 280px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 992px) {
+  /* For tablets and smaller desktops */
+  .audio-player {
+    width: 250px;
+    padding: 8px;
+  }
+
+  .audio-player-image {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* For tablets and large phones */
+  .audio-player {
+    width: 220px;
+    padding: 6px;
+  }
+
+  .audio-player-image {
+    width: 20px;
+    height: 20px;
+  }
+
+  .episode-title {
+    font-size: 0.8em;
+  }
+
+  .play-pause-button {
+    padding: 4px 8px;
+    font-size: 0.8em;
+  }
+}
+
+@media (max-width: 576px) {
+  /* For small phones */
+  .audio-player {
+    width: 180px;
+    padding: 5px;
+  }
+
+  .audio-player-image {
+    width: 18px;
+    height: 18px;
+  }
+
+  .episode-title {
+    font-size: 0.7em;
+  }
+
+  .play-pause-button {
+    padding: 3px 6px;
+    font-size: 0.7em;
+  }
+}
+/* Fixed audio player container positioned at the top-right of the screen */
+.audio-player {
+  position: fixed;
+  top: 0;
+  right: 0; 
+  width: 260px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+/* Responsive styling for different universal screen sizes */
+@media (max-width: 1200px) {
+  .audio-player {
+    width: 240px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 992px) {
+  .audio-player {
+    width: 220px;
+    padding: 8px;
+  }
+  .audio-player-image {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .audio-player {
+    width: 200px;
+    padding: 6px;
+  }
+  .audio-player-image {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 576px) {
+  .audio-player {
+    width: 160px;
+    padding: 5px;
+  }
+  .audio-player-image {
+    width: 15px;
+    height: 15px;
+  }
+}

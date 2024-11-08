@@ -1,5 +1,6 @@
 /* src/styles/Home.css */
 
+/* Default styling for larger screens remains unchanged */
 .home-page {
   text-align: center;
   padding: 20px;
@@ -84,7 +85,8 @@ h1 {
   margin-bottom: 8px;
 }
 
-.last-modified, .genre {
+.last-modified,
+.genre {
   font-size: 0.9rem;
   color: #888;
 }
@@ -103,4 +105,102 @@ h1 {
   background-color: #0056b3;
 }
 
+/* Responsive styling for smaller screens */
+@media (max-width: 1024px) {
+  .show-card {
+    padding: 15px;
+    margin: 15px;
+    max-width: 300px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .search-input {
+    max-width: 350px;
+  }
+
+  .show-title {
+    font-size: 1.4rem;
+  }
+
+  .more-info-button {
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .show-card {
+    max-width: 90%;
+    padding: 10px;
+  }
+
+  .search-input {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .carousel-item h3 {
+    font-size: 1.1rem;
+  }
+
+  .show-title {
+    font-size: 1.2rem;
+  }
+
+  .more-info-button {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+}
+/* Responsive styling for smaller screens */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 150px;
+  }
+}
+/* Responsive styling for universal screen sizes */
+@media (max-width: 1200px) {
+  /* Large desktops */
+  .sidebar {
+    width: 250px;
+  }
+}
+
+@media (max-width: 992px) {
+  /* Tablets and smaller desktops */
+  .sidebar {
+    width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Tablets and large phones */
+  .sidebar {
+    width: 150px;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Small phones */
+  .sidebar {
+    width: 120px;
+  }
+}
 
