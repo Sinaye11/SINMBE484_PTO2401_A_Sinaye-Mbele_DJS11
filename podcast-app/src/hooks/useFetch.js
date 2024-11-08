@@ -1,48 +1,41 @@
-// Importing necessary hooks from React
+// Import necessary hooks from React
 import { useEffect, useState } from 'react';
 
-// Custom hook for fetching data from a given URL
+/**
+ * Custom hook for fetching data from a specified URL.
+ *
+ * @param {string} url - The URL to fetch data from.
+ * @returns {object} An object containing:
+ * - data: The fetched data or null if not yet fetched.
+ * - loading: Boolean indicating if data is currently being fetched.
+ * - error: Error message if the fetch fails, otherwise null.
+ */
 const useFetch = (url) => {
-  // State variables to manage the fetched data, loading status, and errors
-  const [data, setData] = useState(null);  // Stores the fetched data
-  const [loading, setLoading] = useState(true); // Indicates whether the data is being loaded
-  const [error, setError] = useState(null);  // Stores any error encountered during fetch
+  const [data, setData] = useState(null);  // Stores fetched data
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null);  // Error state
 
   useEffect(() => {
-    // Function to fetch data asynchronously
     const fetchData = async () => {
-      setLoading(true); // Ensure loading state is true when starting to fetch
+      setLoading(true);
       try {
-        // Making the fetch request to the provided URL
         const response = await fetch(url);
-
-        // Checking if the response is ok (status in the range 200-299)
         if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`); // Throw an error if response is not ok
+          throw new Error(`Error: ${response.statusText}`);
         }
-
-        // Parsing the response data as JSON
         const result = await response.json();
-
-        // Setting the fetched data into state
         setData(result);
       } catch (error) {
-        // Handling any errors that occur during the fetch
         setError(error.message || "An unexpected error occurred");
       } finally {
-        // Setting loading to false after data fetch attempt
-        setLoading(false);
+        setLoading(false); // Stop loading after fetch attempt
       }
     };
 
-    // Initiating the data fetch when the component mounts or the URL changes
     fetchData();
-
-    // Re-running the effect if the URL changes
   }, [url]);
 
-  // Returning an object containing data, loading, and error to be used by components
-  return { data, loading, error };
+  return { data, loading, error }; // Return fetched data, loading, and error states
 };
 
 export default useFetch;
