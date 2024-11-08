@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Routes, useParams } from 'react-router-dom';
 import './App.css';
+import AudioPlayer from './components/AudioPlayer';
 import Sidebar from './components/SideBar';
 import Favourites from './pages/Favourites';
 import Home from './pages/Home';
@@ -9,18 +10,19 @@ import NotFound from './pages/NotFound';
 import { fetchShowDetails, fetchShows } from './services/api';
 
 const genreMapping = {
-  1: "Personal Growth",
-  2: "Investigative Journalism",
-  3: "History",
-  4: "Comedy",
-  5: "Entertainment",
-  6: "Business",
-  7: "Fiction",
-  8: "News",
-  9: "Kids and Family"
+  1: 'Personal Growth',
+  2: 'Investigative Journalism',
+  3: 'History',
+  4: 'Comedy',
+  5: 'Entertainment',
+  6: 'Business',
+  7: 'Fiction',
+  8: 'News',
+  9: 'Kids and Family',
 };
 
-const ShowDetailWrapper = ({ setCurrentEpisode, currentEpisode }) => {
+// ShowDetailWrapper component
+const ShowDetailWrapper = ({ setCurrentEpisode, setIsPlaying }) => {
   const { id } = useParams();
   const showId = Number(id);
   const [selectedShow, setSelectedShow] = useState(null);
@@ -32,7 +34,7 @@ const ShowDetailWrapper = ({ setCurrentEpisode, currentEpisode }) => {
         const showDetails = await fetchShowDetails(showId);
         setSelectedShow(showDetails);
       } catch (error) {
-        console.error("Error fetching show details:", error);
+        console.error('Error fetching show details:', error);
       } finally {
         setLoading(false);
       }
@@ -48,7 +50,7 @@ const ShowDetailWrapper = ({ setCurrentEpisode, currentEpisode }) => {
     return <p>Show not found.</p>;
   }
 
-  const genreName = genreMapping[selectedShow.genre] || selectedShow.genre?.name || "Unknown";
+  const genreName = genreMapping[selectedShow.genre] || selectedShow.genre?.name || 'Unknown';
 
   return (
     <div>
@@ -57,10 +59,17 @@ const ShowDetailWrapper = ({ setCurrentEpisode, currentEpisode }) => {
         <img
           src={selectedShow.image}
           alt={`${selectedShow.title} cover`}
-          style={{ width: "100%", maxWidth: "400px", borderRadius: "8px", marginBottom: "20px" }}
+          style={{
+            width: '100%',
+            maxWidth: '400px',
+            borderRadius: '8px',
+            marginBottom: '20px',
+          }}
         />
       )}
-      <p><strong>Genre:</strong> {genreName}</p>
+      <p>
+        <strong>Genre:</strong> {genreName}
+      </p>
       <p>{selectedShow.description}</p>
 
       <h2>Seasons</h2>
@@ -78,10 +87,15 @@ const ShowDetailWrapper = ({ setCurrentEpisode, currentEpisode }) => {
                       <p
                         className="episode-title"
                         onClick={() => {
-                          setCurrentEpisode(episode); // Set selected episode globally
-                          console.log("Playing:", episode.audioUrl); // Log the audio URL for debugging
+                          setCurrentEpisode({
+                            ...episode,
+                            showTitle: selectedShow.title,
+                            showImage: selectedShow.image,
+                            // Include any other necessary data
+                          });
+                          setIsPlaying(true);
                         }}
-                        style={{ cursor: "pointer", color: "blue" }}
+                        style={{ cursor: 'pointer', color: 'blue' }}
                       >
                         Episode {episodeIndex + 1}: {episode.title}
                       </p>
@@ -100,38 +114,26 @@ const ShowDetailWrapper = ({ setCurrentEpisode, currentEpisode }) => {
       ) : (
         <p>No seasons available for this show.</p>
       )}
-
-      {/* Audio player below episodes */}
-      {currentEpisode && (
-        <div className="audio-player">
-          <h3>Now Playing: {currentEpisode.title}</h3>
-          <audio controls src={currentEpisode.audioUrl} autoPlay>
-            Your browser does not support the audio element.
-          </audio>
-        </div>
-      )}
     </div>
   );
 };
 
-
 const App = () => {
   const [shows, setShows] = useState([]);
   const [error, setError] = useState(null);
-  const [currentEpisode, setCurrentEpisode] = useState(null); // Global state for current episode
+  const [currentEpisode, setCurrentEpisode] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const loadShows = async () => {
       try {
         const data = await fetchShows();
-        console.log("Data returned from fetchShows:", data);
-        setShows(data);
+        const sortedData = data.sort((a, b) => a.title.localeCompare(b.title));
+        setShows(sortedData);
       } catch (error) {
-        setError("Failed to fetch shows.");
-        console.error("Error fetching shows:", error);
+        setError('Failed to fetch shows.');
       }
     };
-
     loadShows();
   }, []);
 
@@ -139,12 +141,27 @@ const App = () => {
     <Router>
       <div className="app-layout">
         <Sidebar />
-        
+
+        {/* AudioPlayer remains here */}
+        <AudioPlayer
+          episode={currentEpisode}
+          isPlaying={isPlaying}
+          setIsPlaying={setIsPlaying}
+        />
+
         <main className="content">
           {error && <div className="app-error">{error}</div>}
           <Routes>
             <Route path="/" element={<Home shows={shows} />} />
-            <Route path="/show/:id" element={<ShowDetailWrapper setCurrentEpisode={setCurrentEpisode} currentEpisode={currentEpisode} />} />
+            <Route
+              path="/show/:id"
+              element={
+                <ShowDetailWrapper
+                  setCurrentEpisode={setCurrentEpisode}
+                  setIsPlaying={setIsPlaying}
+                />
+              }
+            />
             <Route path="/favourites" element={<Favourites />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

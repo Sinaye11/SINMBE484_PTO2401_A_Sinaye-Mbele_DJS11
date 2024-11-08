@@ -1,26 +1,88 @@
-/* Full AudioPlayer.css */
+/* AudioPlayer.css */
 
+/* Common styles for the audio player */
 .audio-player {
-  margin-top: 20px; /* Add space above the audio player */
-  padding: 15px;
-  background-color: #1f1f1f;
-  color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0; /* Fix it at the top of the viewport */
+  left: 50%; /* Position it relative to the center */
+  transform: translateX(-50%); /* Center it horizontally */
+  width: 500px; /* Set a fixed width (adjust as needed) */
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd; /* Changed to border-bottom */
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Adjusted shadow direction */
+  z-index: 1000;
+  transition: all 0.3s ease;
+  border-radius: 8px; /* Optional: add rounded corners */
 }
 
-/* Title of the currently playing episode */
-.audio-player h3 {
+.audio-player.inactive {
+  /* Adjust padding and height to make it smaller */
+  padding: 5px 10px;
+  height: auto;
+}
+
+/* Adjusted styles to accommodate the reduced width */
+.audio-info {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.audio-player-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.episode-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.episode-title {
+  font-weight: bold;
   margin: 0;
-  font-size: 1.1rem;
-  font-weight: normal;
-  color: #e0e0e0;
-  text-align: center;
+  font-size: 0.9em;
 }
 
-/* Audio controls styling */
-.audio-player audio {
+.audio-controls {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.play-pause-button {
+  padding: 5px 10px;
+  font-size: 0.9em;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.seek-bar {
+  flex: 1;
+  margin-right: 5px;
+}
+
+.time-info {
+  font-size: 0.8em;
+}
+
+/* Style for when no episode is selected */
+.no-episode {
+  text-align: center;
+  color: #666;
+  font-size: 0.9em;
   width: 100%;
-  max-width: 600px;
-  outline: none;
+}
+
+/* Hide controls and info when inactive */
+.audio-player.inactive .audio-info,
+.audio-player.inactive .audio-controls,
+.audio-player.inactive .time-info {
+  display: none;
 }

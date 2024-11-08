@@ -1,92 +1,117 @@
+// AudioPlayer.js
 import React, { useEffect, useRef, useState } from 'react';
+import './AudioPlayer.css';
 
-const AudioPlayer = ({ episode, currentlyPlaying, setCurrentlyPlaying, setIsPlaying, isPlaying }) => {
+const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
   const audioRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  // Sync the play/pause state with the audio element
+  // Play or pause the audio when isPlaying or episode changes
   useEffect(() => {
-    if (isPlaying && audioRef.current) {
-      audioRef.current.play(); // Play the current episode
-    } else if (audioRef.current) {
-      audioRef.current.pause(); // Pause the audio when not playing
-    }
-  }, [isPlaying]);
-
-  // Update current time and duration when audio is playing
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (audioRef.current) {
-        setCurrentTime(audioRef.current.currentTime);
-        setDuration(audioRef.current.duration);
-      }
-    }, 1000);
-
-    return () => clearInterval(interval); // Clean up the interval on unmount
-  }, [isPlaying]);
-
-  // Handle the play/pause logic for the current episode
-  const handleAudioClick = () => {
-    // If the clicked episode is already the one currently playing, toggle play/pause
-    if (currentlyPlaying?.id === episode.id) {
-      setIsPlaying(!isPlaying); // Toggle play/pause when clicking the same episode
-    } else {
-      // Pause the previously playing audio if a new episode is selected
-      if (currentlyPlaying?.id && audioRef.current) {
-        audioRef.current.pause();
-        setIsPlaying(false); // Stop the previous episode
-      }
-
-      // Start playing the selected episode
-      setCurrentlyPlaying(episode); // Set the new episode as currently playing
-      setIsPlaying(true); // Start playback
-    }
-  };
-
-  // Handle the seek functionality
-  const handleSeekChange = (event) => {
-    const newTime = event.target.value;
-    setCurrentTime(newTime);
     if (audioRef.current) {
-      audioRef.current.currentTime = newTime;
+      if (isPlaying && episode) {
+        audioRef.current.play();
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isPlaying, episode]);
+
+  // Update currentTime and duration
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    const updateTime = () => {
+      setCurrentTime(audio.currentTime);
+    };
+
+    const updateDuration = () => {
+      setDuration(audio.duration);
+    };
+
+    if (audio) {
+      audio.addEventListener('timeupdate', updateTime);
+      audio.addEventListener('loadedmetadata', updateDuration);
+    }
+
+    return () => {
+      if (audio) {
+        audio.removeEventListener('timeupdate', updateTime);
+        audio.removeEventListener('loadedmetadata', updateDuration);
+      }
+    };
+  }, [episode]);
+
+  // Handle play/pause button click
+  const handlePlayPause = () => {
+    if (episode) {
+      setIsPlaying(!isPlaying);
     }
   };
+
+  // Handle seek bar change
+  const handleSeek = (e) => {
+    const newTime = e.target.value;
+    audioRef.current.currentTime = newTime;
+    setCurrentTime(newTime);
+  };
+
+  // Format time in mm:ss
+  const formatTime = (time) => {
+    if (isNaN(time)) return '0:00';
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60)
+      .toString()
+      .padStart(2, '0');
+    return `${minutes}:${seconds}`;
+  };
+
+  // Adjust the className for conditional styling
+  const playerClassName = episode ? 'audio-player active' : 'audio-player inactive';
 
   return (
-    <div className="audio-player">
-      <div className="audio-controls">
-        {/* Play/Pause Button */}
-        <button onClick={handleAudioClick} className="play-pause-button">
-          {isPlaying && currentlyPlaying?.id === episode.id ? 'Pause' : 'Play'}
-        </button>
-
-        {/* Audio progress tracker */}
-        <div className="progress-bar-container">
-          <input
-            type="range"
-            min="0"
-            max={duration}
-            value={currentTime}
-            onChange={handleSeekChange}
-            className="progress-bar"
-          />
-          <div className="progress-time">
-            <span>{Math.floor(currentTime)}s</span> / <span>{Math.floor(duration)}s</span>
+    <div className={playerClassName}>
+      {episode ? (
+        <>
+          <div className="audio-info">
+            <img
+              src={episode.showImage}
+              alt={`${episode.showTitle} cover`}
+              className="audio-player-image"
+            />
+            <div className="episode-details">
+              <p className="episode-title">{episode.title}</p>
+              {/* You can include additional details if needed */}
+            </div>
           </div>
+          <div className="audio-controls">
+            <button onClick={handlePlayPause} className="play-pause-button">
+              {isPlaying ? 'Pause' : 'Play'}
+            </button>
+            <input
+              type="range"
+              min="0"
+              max={duration || 0}
+              value={currentTime}
+              onChange={handleSeek}
+              className="seek-bar"
+            />
+          </div>
+          <div className="time-info">
+            {formatTime(currentTime)} / {formatTime(duration)}
+          </div>
+          <audio
+            ref={audioRef}
+            src={episode.file || episode.audioUrl}
+            onEnded={() => setIsPlaying(false)}
+          />
+        </>
+      ) : (
+        <div className="no-episode">
+          <p>No episode selected.</p>
         </div>
-      </div>
-
-      {/* Audio element */}
-      <audio
-        ref={audioRef}
-        src={episode.file}  // Assuming the episode object has a 'file' property with audio URL
-        onEnded={() => setIsPlaying(false)}  // Automatically stop when the audio ends
-        preload="metadata"
-      />
-
-      {/* Display current playback status */}
-      <p>{currentlyPlaying?.id === episode.id ? 'Now playing: ' + episode.title : 'Click to play'}</p>
+      )}
     </div>
   );
 };
