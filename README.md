@@ -91,7 +91,9 @@ Contact Information
 For any inquiries or further information, please contact:
 
 Name: Sinaye Mbele
+
 Email: sinaye.mbele@gmail.com
+
 Check out the live app here: [Podcast App on Netlify](https://cheerful-swan-d16b66.netlify.app)
 
 
