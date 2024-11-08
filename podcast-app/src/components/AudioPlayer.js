@@ -1,6 +1,6 @@
 // src/components/AudioPlayer.js
 import React, { useEffect, useRef, useState } from 'react';
-import { FaMusic } from 'react-icons/fa'; // Importing an icon for a better placeholder
+import { FaMusic } from 'react-icons/fa'; // For placeholder icon
 import './AudioPlayer.css';
 
 const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
@@ -8,7 +8,6 @@ const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  // Play or pause the audio when isPlaying or episode changes
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying && episode) {
@@ -19,7 +18,6 @@ const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
     }
   }, [isPlaying, episode]);
 
-  // Update currentTime and duration
   useEffect(() => {
     const audio = audioRef.current;
 
@@ -44,21 +42,18 @@ const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
     };
   }, [episode]);
 
-  // Handle play/pause button click
   const handlePlayPause = () => {
     if (episode) {
       setIsPlaying(!isPlaying);
     }
   };
 
-  // Handle seek bar change
   const handleSeek = (e) => {
     const newTime = e.target.value;
     audioRef.current.currentTime = newTime;
     setCurrentTime(newTime);
   };
 
-  // Format time in mm:ss
   const formatTime = (time) => {
     if (isNaN(time)) return '0:00';
     const minutes = Math.floor(time / 60);
@@ -68,8 +63,8 @@ const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
     return `${minutes}:${seconds}`;
   };
 
-  // Adjust the className for conditional styling
-  const playerClassName = episode ? 'audio-player active' : 'audio-player inactive';
+  // Apply pulsating class conditionally based on isPlaying state
+  const playerClassName = `audio-player ${episode ? 'active' : 'inactive'} ${isPlaying ? 'pulsating' : ''}`;
 
   return (
     <div className={playerClassName}>
@@ -111,7 +106,7 @@ const AudioPlayer = ({ episode, isPlaying, setIsPlaying }) => {
         </>
       ) : (
         <div className="no-episode">
-          <FaMusic size={60} color="#999" />
+          <FaMusic size={40} color="#999" />
           <h2>No Episode Selected</h2>
           <p>Select an episode to start listening.</p>
         </div>

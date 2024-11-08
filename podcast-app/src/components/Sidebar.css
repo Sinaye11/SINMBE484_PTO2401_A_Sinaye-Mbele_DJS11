@@ -7,37 +7,40 @@
     padding-top: 20px;
     position: fixed;
     overflow: auto;
-  }
-  
-  .nav-link {
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column; /* Stack logo and title vertically */
+    align-items: center; /* Center align items horizontally */
+    margin-bottom: 20px; /* Space below the logo and title */
+}
+
+.logo {
+    height: 60px; /* Adjust as needed for size */
+    margin-bottom: 10px; /* Space between logo and title */
+}
+
+.sidebar-title {
+    color: #ecf0f1; /* Color for the title */
+    font-size: 1.5em; /* Font size for the title */
+    margin: 0; /* Remove default margin */
+}
+
+.nav-link {
     display: block;
     color: #ecf0f1;
     padding: 15px 20px;
     text-decoration: none;
     font-size: 16px;
-  }
-  
-  .nav-link:hover {
+}
+
+.nav-link:hover {
     background-color: #34495e;
     color: #ffffff;
-  }
-  
-  .nav-link.active {
+}
+
+.nav-link.active {
     background-color: #2980b9;
     color: #ffffff;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .sidebar {
-      width: 100%;
-      height: auto;
-      position: relative;
-    }
-  
-    .nav-link {
-      text-align: center;
-      padding: 10px;
-      font-size: 18px;
-    }
-  }
-  
+}
