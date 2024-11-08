@@ -30,6 +30,22 @@ const App = () => {
     loadShows();
   }, []);
 
+  // Add beforeunload event listener to prompt before navigating away
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (isPlaying) {
+        event.preventDefault();
+        event.returnValue = ''; // Standard way to trigger a browser prompt
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isPlaying]);
+
   return (
     <FavouritesProvider>
       <Router>
