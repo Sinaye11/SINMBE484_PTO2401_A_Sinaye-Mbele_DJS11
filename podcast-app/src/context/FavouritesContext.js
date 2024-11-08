@@ -1,4 +1,3 @@
-// src/context/FavouritesContext.js
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 export const FavouritesContext = createContext();
@@ -23,17 +22,15 @@ export const FavouritesProvider = ({ children }) => {
 
   const addFavourite = (episode) => {
     setFavourites((prevFavourites) => {
-      // Check if the episode already exists to prevent duplicates
       if (!prevFavourites.some((fav) => fav.id === episode.id)) {
-        // Create a new favourite object with full details and timestamp
         const newFavourite = {
           ...episode,
           seasonNumber: episode.seasonNumber,
-          seasonImage: episode.seasonImage, // Ensure this includes the season image
+          seasonImage: episode.seasonImage,
           addedAt: new Date().toISOString(),
         };
-        const updatedFavourites = [...prevFavourites, newFavourite]; // Accumulate favorites
-        console.log("Updated favourites list:", updatedFavourites); // Debugging output
+        const updatedFavourites = [...prevFavourites, newFavourite];
+        console.log("Updated favourites list:", updatedFavourites);
         return updatedFavourites;
       }
       return prevFavourites;
@@ -43,7 +40,7 @@ export const FavouritesProvider = ({ children }) => {
   const removeFavourite = (episodeId) => {
     setFavourites((prevFavourites) => {
       const updatedFavourites = prevFavourites.filter((fav) => fav.id !== episodeId);
-      console.log("Updated favourites after removal:", updatedFavourites); // Debugging output
+      console.log("Updated favourites after removal:", updatedFavourites);
       return updatedFavourites;
     });
   };
@@ -52,9 +49,22 @@ export const FavouritesProvider = ({ children }) => {
     return favourites.some((fav) => fav.id === episodeId);
   };
 
+  // Reset favourites and clear from localStorage
+  const resetFavourites = () => {
+    setFavourites([]); // Clear the state
+    localStorage.removeItem('favourites'); // Clear favourites from localStorage
+    console.log("Favourites reset");
+  };
+
   return (
     <FavouritesContext.Provider
-      value={{ favourites, addFavourite, removeFavourite, isFavourite }}
+      value={{
+        favourites,
+        addFavourite,
+        removeFavourite,
+        isFavourite,
+        resetFavourites, // Make resetFavourites available in context
+      }}
     >
       {children}
     </FavouritesContext.Provider>
